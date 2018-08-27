@@ -1,0 +1,127 @@
+<?php
+
+namespace Laraflat\Laraflat\Laraflat\Commands;
+
+use Illuminate\Console\Command;
+use Illuminate\Filesystem\Filesystem;
+
+use Illuminate\Support\Facades\Artisan;
+use Laraflat\Laraflat\Laraflat\Models\Module;
+use Illuminate\Support\Str;
+use Laraflat\Laraflat\Laraflat\Traits\SeederTrait;
+
+class SeederCommand extends Command
+{
+
+    use SeederTrait;
+
+    protected $filesystem;
+
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'laraflat:seeder {module}';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'We now generate migration file based on module name';
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct(Filesystem $filesystem)
+    {
+        parent::__construct();
+
+        $this->filesystem = $filesystem;
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        $moduleName = $this->argument('module');
+
+        $module = Module::where('name' , $moduleName)->with('columns.details')->first();
+
+        $moduleText = $this->getModuleText($module);
+
+        $columnText = $this->getColumnText($module->columns);
+
+        $columnDetailsText = $this->getColumnDetailsText($module->columns);
+
+        $relationText = $this->getModuleRelation($module->id);
+
+        $this->filesystem->put(
+            fixPath(base_path('app/Modules/'.$module->name.'/Database/seeds/'.$module->name.'Seeder.php'))
+            , $this->buildFile($moduleText , $columnText , $module->name , $columnDetailsText ,$relationText)
+        );
+
+//        Artisan::call('migrate');
+    }
+
+    /*
+     * get file
+     */
+
+    protected function getStub(){
+        return __DIR__.'/../../stubs/seed.stub';
+    }
+
+    /*
+     * replace  stub file with data
+     */
+
+    protected function buildFile($moduleText , $columnText , $name , $columnDetailsText , $relationText){
+
+        $stub = $this->filesystem->get($this->getStub());
+
+        return $this->replaceContent($stub, $moduleText , $columnText , $name , $relationText)->replaceTableName($stub, $columnDetailsText);
+
+    }
+
+    /**
+     * Replace content of migration
+     *
+     * @param  string  $stub
+     * @param  string  $name
+     * @return $this
+     */
+
+    protected function replaceContent(&$stub, $moduleText , $columnText , $name , $relationText)
+    {
+        $stub = str_replace(
+            ['DummyModule' , 'DummyColumn' , 'DummyClass' , 'DummyRelation'],
+            [$moduleText , $columnText , $name ,$relationText],
+            $stub
+        );
+        return $this;
+    }
+
+    /**
+     * Replace table name
+     *
+     * @param  string  $stub
+     * @param  string  $name
+     * @return string
+     */
+    protected function replaceTableName($stub, $columnDetailsText)
+    {
+        return str_replace('DummyDetails', $columnDetailsText, $stub);
+    }
+
+
+
+
+
+}

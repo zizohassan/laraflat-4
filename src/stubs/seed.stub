@@ -1,0 +1,55 @@
+<?php
+namespace App\Modules\DummyClass\Database\Seeds;
+
+use Illuminate\Database\Seeder;
+
+class DummyClassSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+
+        /*
+         * module row insert in case you fresh your database
+         * you will find your module info still save
+         */
+
+DummyModule
+
+        \Laraflat\Laraflat\Laraflat\Models\Module::create($array);
+
+        /*
+         * column row insert in case you fresh your database
+         * you will find your column info still save
+         */
+
+DummyColumn
+
+        \Laraflat\Laraflat\Laraflat\Models\Column::insert($array);
+
+        /*
+       * column Details row insert in case you fresh your database
+       * you will find your column Details info still save
+       */
+
+DummyDetails
+
+        \Laraflat\Laraflat\Laraflat\Models\ColumnDetail::insert($array);
+
+        /*
+        * Module Relation row insert in case you fresh your database
+        * you will find your column Details info still save
+        */
+
+DummyRelation
+
+       if(!empty($array)){
+          \Laraflat\Laraflat\Laraflat\Models\Relation::insert($array);
+       }
+
+    }
+}
