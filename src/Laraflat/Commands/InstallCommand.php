@@ -87,7 +87,7 @@ class InstallCommand extends Command
         );
 
         $this->filesystem->put(
-            fixPath(base_path('app/Http/kernel.php'))
+            fixPath(base_path('app/Http/Kernel.php'))
             , $this->buildFile($this->getKernelStub() , $name)
         );
     }
