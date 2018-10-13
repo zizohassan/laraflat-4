@@ -235,6 +235,11 @@ class GeneratorController extends Controller
 
         $this->createSeederFile($module);
 
+        /*
+        * rediredct back to the same page
+        * then the next step to migrate 
+        */
+
         return redirect()->back();
 
     }

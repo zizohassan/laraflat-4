@@ -56,7 +56,7 @@ class InstallCommand extends Command
 
         Artisan::call('make:auth');
 
-        $path = base_path('database'.$this->DS.'seeds');
+        $path = base_path('database'.$this->DS.'seeds'.$this->DS);
 
         $name = '';
 
@@ -90,6 +90,7 @@ class InstallCommand extends Command
             fixPath(base_path('app/Http/Kernel.php'))
             , $this->buildFile($this->getKernelStub() , $name)
         );
+
     }
 
 
@@ -134,7 +135,7 @@ class InstallCommand extends Command
     }
 
     /*
-    * get file
+    * get App  file
     */
 
     protected function getAppStub(){
