@@ -42,14 +42,16 @@ class MenuController
 
     public function build($id  , Menu $menu){
 
-        $menu = $menu->with(['items' => function($query){
-
-            return $query->orderBy('order');
-
-        }])->findOrFail($id);
+        $menu = $menu->findOrFail($id);
 
         $parents = MenuItem::where('parent_id' , 0)->where('menu_id' , $menu->id)->pluck('name_'.l() , 'id')->toArray();
 
-        return view('laraflat::admin.menu.build' , compact('menu' , 'parents'));
+        $items = MenuItem::where('menu_id' , $id)
+            ->orderBy('order')
+            ->where('parent_id' ,0)
+            ->with('parent')
+            ->get();
+
+        return view('laraflat::admin.menu.build' , compact('menu' , 'parents' , 'items'));
     }
 }

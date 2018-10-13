@@ -68,24 +68,25 @@
                         </div>
                     </div>
                     <table class="table table-borderd table-stripped">
-                        @foreach($menu->items as $item)
+                        @foreach($items as $item)
+                            @php $parent = $item->parent->count() > 0 ? true : false @endphp
                             <tr>
                                 <td>
-                                    {{ $item->name_ar }}
-                                </td>
-                                <td>
-                                    {{ $item->name_en }}
+                                    {{ $item->{fwcl('name')} }}
                                 </td>
                                 <td>
                                     {!! Form::open(['route' => [ 'itmes.destroy' , $item->id], 'role' => 'form' , 'class' => 'form-inline']) !!}
                                         {{ method_field('delete') }}
                                         <button  class="btn btn-danger" ><i class="fa fa-trash"></i></button>
-                                        <span class="btn btn-success" onclick="showEditForm(this)"><i class="fa fa-edit"></i></span>
+                                        <span class="btn btn-success" onclick="showEdit(this)"><i class="fa fa-edit"></i></span>
+                                    @if($parent)
+                                        <span class="btn btn-info" onclick="showChilds(this)"><i class="fa fa-link"></i></span>
+                                    @endif
                                     {!! Form::close() !!}
                                 </td>
                             </tr>
-                            <tr style="display: none">
-                                <td colspan="4">
+                            <tr style="display: none" class="edit">
+                                <td colspan="3">
                                     {!! Form::model( $item , ['route' => ['itmes.update' , $item->id ], 'role' => 'form']) !!}
                                     {{ method_field('patch') }}
                                     <div class="box-body">
@@ -103,6 +104,39 @@
                                     {!! Form::close() !!}
                                 </td>
                             </tr>
+                            @if($parent)
+                                <tr style="display: none" class="child">
+                                <td colspan="3">
+                                    <ol class="list-group">
+                                        @foreach($item->parent  as $item)
+                                            <li class="list-group-item">
+                                                {!! Form::open(['route' => [ 'itmes.destroy' , $item->id], 'role' => 'form' , 'class' => 'inline-form']) !!}
+                                                {{ $item->{fwcl('name')} }}
+                                                {{ method_field('delete') }}
+                                                <button  class="btn btn-link" ><i class="fa fa-trash"></i></button>
+                                                <span class="btn btn-link" onclick="showEditChild(this)"><i class="fa fa-edit"></i></span>
+                                                {!! Form::close() !!}
+                                                {!! Form::model( $item , ['route' => ['itmes.update' , $item->id ], 'role' => 'form' , 'style' => 'display: none']) !!}
+                                                {{ method_field('patch') }}
+                                                <div class="box-body">
+                                                    @include('laraflat::fileds.php.text' , ['name' => 'name_ar' , 'value' => $item->name_ar , 'label' => trans('laraflat::laraflat.Item name Arabic')])
+                                                    @include('laraflat::fileds.php.text' , ['name' => 'name_en' , 'value' => $item->name_en , 'label' => trans('laraflat::laraflat.Item name English')])
+                                                    @include('laraflat::fileds.php.text' , ['name' => 'icon' , 'value' => $item->icon , 'label' => trans('laraflat::laraflat.icon'), 'placeholder' => '<i class="fa fa-trash"></i>'])
+                                                    @include('laraflat::fileds.php.text' , ['name' => 'link', 'value' => $item->link  , 'label' => trans('laraflat::laraflat.link')])
+                                                    @include('laraflat::fileds.php.select' , ['name' => 'parent_id', 'value' => $item->parent_id  ,  'label' => trans('laraflat::laraflat.Parent Item') , 'array' => [ 0 => trans('laraflat::laraflat.No parent menu')] + array_except( $parents, $item->id)])
+                                                    <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                                                </div>
+                                                <!-- /.box-body -->
+                                                <div class="box-footer">
+                                                    {!! Form::submit(trans('laraflat::laraflat.Save') , ['class' => 'btn btn-info']) !!}
+                                                </div>
+                                                {!! Form::close() !!}
+                                            </li>
+                                        @endforeach
+                                    </ol>
+                                </td>
+                            </tr>
+                            @endif
                         @endforeach
                     </table>
 
@@ -116,8 +150,14 @@
 
 @push('js')
     <script>
-        function showEditForm(e) {
-            $(e).closest('tr').next('tr').toggle(1000);
+        function showEdit(e) {
+            $(e).closest('tr').next('tr').toggle(100);
+        }
+        function showChilds(e) {
+            $(e).closest('tr').next('tr').next('tr').toggle(100);
+        }
+        function showEditChild(e) {
+            $(e).closest('form').next('form').toggle(100);
         }
     </script>
 @endpush

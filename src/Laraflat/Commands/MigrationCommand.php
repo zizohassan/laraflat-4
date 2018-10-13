@@ -11,11 +11,12 @@ use Illuminate\Support\Facades\Schema;
 use Laraflat\Laraflat\Laraflat\Models\Module;
 use Laraflat\Laraflat\Laraflat\Traits\MigrationTrait;
 use Illuminate\Support\Str;
+use Laraflat\Laraflat\Laraflat\Traits\SeedsTrait;
 
 class MigrationCommand extends Command
 {
 
-    use MigrationTrait;
+    use MigrationTrait, SeedsTrait;
 
     protected $filesystem;
 
@@ -107,6 +108,12 @@ class MigrationCommand extends Command
         Artisan::call('migrate:refresh' , ['--seed' => true]);
 
         Schema::enableForeignKeyConstraints();
+
+        $this->adminMenu();
+
+        $this->menuItems();
+
+        $this->generateAllModulesItems();
     }
 
   /*

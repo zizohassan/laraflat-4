@@ -4,6 +4,7 @@ namespace Laraflat\Laraflat\Laraflat\Traits;
 
 use Laraflat\Laraflat\Laraflat\Models\Menu;
 use Laraflat\Laraflat\Laraflat\Models\MenuItem;
+use Laraflat\Laraflat\Laraflat\Models\Module;
 
 trait SeedsTrait
 {
@@ -62,6 +63,73 @@ trait SeedsTrait
         foreach ($items as $item) {
             MenuItem::create($item);
         }
+
+    }
+
+    protected function generateAllModulesItems(){
+        foreach (Module::get() as $module){
+            $this->insertModuleToMenuItem($module);
+        }
+    }
+
+    protected function insertModuleToMenuItem($module){
+
+        /*
+         * count prev items to get order for new one
+         */
+
+        $order = MenuItem::count();
+
+        /*
+         * generate main item (parent)
+         */
+
+        $array =   [
+            'name_ar' => $module->name,
+            'name_en' => $module->name,
+            'slug' => $module->name,
+            'order' => $order + 1,
+            'menu_id' => 1,
+            'parent_id' => 0,
+            'icon' => '<i class="fa fa-server"></i>',
+            'link' => '#'
+        ];
+
+        $parent = MenuItem::create($array);
+
+        /*
+         * gentrate control item
+         */
+
+        $array =   [
+            'name_ar' =>  'Control '.$module->name,
+            'name_en' =>  'Control '.$module->name,
+            'slug' => $module->name,
+            'order' => $order + 2,
+            'menu_id' => 1,
+            'parent_id' => $parent->id,
+            'icon' => '#',
+            'link' => '/admin/'.strtolower($parent->slug)
+        ];
+
+        MenuItem::create($array);
+
+        /*
+         * gentrate create item
+         */
+
+        $array =   [
+            'name_ar' => 'Create '.$module->name,
+            'name_en' => 'Create '.$module->name,
+            'slug' => $module->name,
+            'order' => $order + 3,
+            'menu_id' => 1,
+            'parent_id' => $parent->id,
+            'icon' => '#',
+            'link' => '/admin/'.strtolower($parent->slug).'/create'
+        ];
+
+        MenuItem::create($array);
 
     }
 

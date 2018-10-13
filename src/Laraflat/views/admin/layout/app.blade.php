@@ -4,6 +4,7 @@
         ->where('parent_id' ,0)
         ->with('parent')
         ->get();
+    $segment = request()->segment(3);
 @endphp
         <!DOCTYPE html>
 <html>
@@ -220,7 +221,7 @@
                 <li class="header">MAIN NAVIGATION</li>
                 @foreach($adminMenu as $menu)
                     @php $hasChild =  $menu->parent->count() != 0  ? true : false @endphp
-                    <li {{ $hasChild === true ? "class=treeview" : "" }}>
+                    <li class="{{ $hasChild === true ? "treeview" : "" }} {{ $segment == strtolower($menu->slug) ? "menu-open" : "" }}">
                         <a href="{{ !$hasChild ? $menu->link : '#' }}">
                             {!! $menu->icon !!} <span>{{ $menu->{fwcl('name')} }}</span>
                             @if($hasChild)
@@ -230,7 +231,7 @@
                             @endif
                         </a>
                         @if($hasChild )
-                            <ul class="treeview-menu">
+                            <ul class="treeview-menu" style="{{ $segment == strtolower($menu->slug) ? "display: block;" : "" }}">
                                 @foreach($menu->parent as $item)
                                     <li><a href="{{ $item->link }}"> {{ $item->{fwcl('name')} }}</a></li>
                                 @endforeach

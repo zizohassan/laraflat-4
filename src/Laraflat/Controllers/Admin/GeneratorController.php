@@ -8,11 +8,12 @@ use Laraflat\Laraflat\Laraflat\Models\MenuItem;
 use Laraflat\Laraflat\Laraflat\Models\Module;
 use Laraflat\Laraflat\Laraflat\Models\Relation;
 use Laraflat\Laraflat\Laraflat\Traits\GeneratorTrait;
+use Laraflat\Laraflat\Laraflat\Traits\SeedsTrait;
 
 class GeneratorController extends Controller
 {
 
-    use GeneratorTrait;
+    use GeneratorTrait , SeedsTrait;
 
     /*
      * delete relation and rebuild the
@@ -631,49 +632,6 @@ class GeneratorController extends Controller
 
     }
 
-    protected function insertModuleToMenuItem($module){
 
-        $order = MenuItem::count();
-
-        $array =   [
-            'name_ar' => $module->name,
-            'name_en' => $module->name,
-            'slug' => $module->name,
-            'order' => $order + 1,
-            'menu_id' => 1,
-            'parent_id' => 0,
-            'icon' => '<i class="fa fa-server"></i>',
-            'link' => '#'
-        ];
-
-        $parent = MenuItem::create($array);
-
-        $array =   [
-            'name_ar' =>  'Control '.$module->name,
-            'name_en' =>  'Control '.$module->name,
-            'slug' => $module->name,
-            'order' => $order + 2,
-            'menu_id' => 1,
-            'parent_id' => $parent->id,
-            'icon' => '#',
-            'link' => '/admin/'.strtolower($parent->slug)
-        ];
-
-        MenuItem::create($array);
-
-        $array =   [
-            'name_ar' => 'Create '.$module->name,
-            'name_en' => 'Create '.$module->name,
-            'slug' => $module->name,
-            'order' => $order + 3,
-            'menu_id' => 1,
-            'parent_id' => $parent->id,
-            'icon' => '#',
-            'link' => '/admin/'.strtolower($parent->slug).'/create'
-        ];
-
-        MenuItem::create($array);
-
-    }
 
 }
