@@ -59,11 +59,8 @@ trait SeedsTrait
             ],
         ];
 
-
-        foreach ($items as $item){
-            foreach ($item as $it){
-                MenuItem::create($it);
-            }
+        foreach ($items as $item) {
+            MenuItem::create($item);
         }
 
     }

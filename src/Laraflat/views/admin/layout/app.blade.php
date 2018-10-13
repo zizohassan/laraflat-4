@@ -1,4 +1,11 @@
-<!DOCTYPE html>
+@php
+    $adminMenu = \Laraflat\Laraflat\Laraflat\Models\MenuItem::where('menu_id' , 1)
+        ->orderBy('order')
+        ->where('parent_id' ,0)
+        ->with('parent')
+        ->get();
+@endphp
+        <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -208,98 +215,30 @@
                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
-            <!-- search form -->
-            <form action="#" method="get" class="sidebar-form">
-                <div class="input-group">
-                    <input type="text" name="q" class="form-control" placeholder="Search...">
-                    <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-                </div>
-            </form>
-            <!-- /.search form -->
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">MAIN NAVIGATION</li>
-
-                {{--@if(config('laraflat.mode') == 'local')--}}
-
-                {{--@foreach(\Laraflat\Laraflat\Laraflat\Models\Module::get() as $module)--}}
-                {{--@if(Route::has(mb_strtolower($module->name).'.index'))--}}
-                {{--<li class="treeview">--}}
-                {{--<a href="#">--}}
-                {{--<i class="fa fa-dashboard"></i> <span>{{ $module->name }}</span>--}}
-                {{--<span class="pull-right-container">--}}
-                {{--<i class="fa fa-angle-left pull-right"></i>--}}
-                {{--</span>--}}
-                {{--</a>--}}
-                {{--<ul class="treeview-menu">--}}
-                {{--<li><a href="{{ route(mb_strtolower($module->name).'.index') }}"><i class="fa fa-circle-o"></i> {{ $module->name }}</a></li>--}}
-                {{--<li><a href="{{ route(mb_strtolower($module->name).'.create') }}"><i class="fa fa-circle-o"></i> @lang('laraflat::laraflat.Create') {{ $module->name }}</a></li>--}}
-                {{--</ul>--}}
-                {{--</li>--}}
-                {{--@endif--}}
-                {{--@endforeach--}}
-
-                {{-- TO DO IMPORT EXPORT MOUDULES --}}
-                {{--<li>--}}
-                {{--<a href="{{ route('view-export') }}"><i class="fa fa-download"></i>  @lang('laraflat::laraflat.Laraflat Export')</a>--}}
-                {{--</li>--}}
-
-                {{--<li>--}}
-                {{--<a href="{{ route('view-import') }}"><i class="fa fa-upload"></i>  @lang('laraflat::laraflat.Laraflat Import')</a>--}}
-                {{--</li>--}}
-
-                {{--@endif--}}
-
-
-                <li>
-                    <a href="{{ route('menu') }}">
-                        <i class="fa fa-server"></i> <span>@lang('laraflat::laraflat.Menu')</span>
-                    </a>
-                </li>
-
-
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-dashboard"></i> <span>@lang('laraflat::laraflat.Generator')</span>
-                        <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="{{ route('modules') }}"><i
-                                        class="fa fa-circle-o"></i> @lang('laraflat::laraflat.Module Builder')</a></li>
-                        <li><a href="{{ route('view-step-one') }}"><i
-                                        class="fa fa-circle-o"></i> @lang('laraflat::laraflat.Add Module')</a></li>
-                    </ul>
-                </li>
-                @php
-                    $adminMenu = \Laraflat\Laraflat\Laraflat\Models\MenuItem::where('menu_id' , 1)
-                        ->orderBy('order')
-                        ->get()
-                        ->groupBy('parent_id');
-                @endphp
-
                 @foreach($adminMenu as $menu)
-                    @foreach($menu as $item)
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-dashboard"></i> <span>{{ $item->{fwcl('name')} }}</span>
+                    @php $hasChild =  $menu->parent->count() != 0  ? true : false @endphp
+                    <li {{ $hasChild === true ? "class=treeview" : "" }}>
+                        <a href="{{ !$hasChild ? $menu->link : '#' }}">
+                            {!! $menu->icon !!} <span>{{ $menu->{fwcl('name')} }}</span>
+                            @if($hasChild)
                                 <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                            </a>
+                                     <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            @endif
+                        </a>
+                        @if($hasChild )
                             <ul class="treeview-menu">
-                                <li><a href="{{ $item->link }}"> {{ $item->{fwcl('name')} }}</a></li>
+                                @foreach($menu->parent as $item)
+                                    <li><a href="{{ $item->link }}"> {{ $item->{fwcl('name')} }}</a></li>
+                                @endforeach
                             </ul>
-                        </li>
-                    @endforeach
+                        @endif
+                    </li>
                 @endforeach
-
             </ul>
-
         </section>
         <!-- /.sidebar -->
     </aside>

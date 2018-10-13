@@ -649,8 +649,8 @@ class GeneratorController extends Controller
         $parent = MenuItem::create($array);
 
         $array =   [
-            'name_ar' => $module->name,
-            'name_en' => $module->name,
+            'name_ar' =>  'Control '.$module->name,
+            'name_en' =>  'Control '.$module->name,
             'slug' => $module->name,
             'order' => $order + 2,
             'menu_id' => 1,
@@ -662,8 +662,8 @@ class GeneratorController extends Controller
         MenuItem::create($array);
 
         $array =   [
-            'name_ar' => 'create '.$module->name,
-            'name_en' => 'create '.$module->name,
+            'name_ar' => 'Create '.$module->name,
+            'name_en' => 'Create '.$module->name,
             'slug' => $module->name,
             'order' => $order + 3,
             'menu_id' => 1,
