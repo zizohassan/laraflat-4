@@ -50,12 +50,11 @@ class InstallCommand extends Command
     public function handle()
     {
 
-
         Artisan::call('migrate');
-
 
         Artisan::call('storage:link');
 
+        Artisan::call('make:auth');
 
         $path = base_path('database'.$this->DS.'seeds');
 
@@ -77,6 +76,20 @@ class InstallCommand extends Command
             , $this->buildFile($this->getConfigStub() , $name)
         );
 
+        $this->filesystem->put(
+            fixPath(base_path('config/laravellocalization.php'))
+            , $this->buildFile($this->getLangStub() , $name)
+        );
+
+        $this->filesystem->put(
+            fixPath(base_path('config/app.php'))
+            , $this->buildFile($this->getProviderStub() , $name)
+        );
+
+        $this->filesystem->put(
+            fixPath(base_path('app/Http/kernel.php'))
+            , $this->buildFile($this->getKernelStub() , $name)
+        );
     }
 
 
@@ -97,8 +110,32 @@ class InstallCommand extends Command
     }
 
     /*
-   * get file
-   */
+    * get kernel file
+    */
+
+    protected function getKernelStub(){
+        return __DIR__.'/../../stubs/install/kernel.stub';
+    }
+
+    /*
+    * get Providers file
+    */
+
+    protected function getProviderStub(){
+        return __DIR__.'/../../stubs/install/config/app.stub';
+    }
+
+    /*
+    * get Providers file
+    */
+
+    protected function getLangStub(){
+        return __DIR__.'/../../stubs/install/config/laravellocalization.stub';
+    }
+
+    /*
+    * get file
+    */
 
     protected function getAppStub(){
         return __DIR__.'/../../stubs/install/app.stub';
