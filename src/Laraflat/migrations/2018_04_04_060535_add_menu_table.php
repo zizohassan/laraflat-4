@@ -27,6 +27,6 @@ class AddMenuTable extends Migration
      */
     public function down()
     {
-        Schema::drop('relations');
+        Schema::drop('menus');
     }
 }
