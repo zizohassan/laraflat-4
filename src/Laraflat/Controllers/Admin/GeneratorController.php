@@ -4,6 +4,7 @@ namespace Laraflat\Laraflat\Laraflat\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Artisan;
+use Laraflat\Laraflat\Laraflat\Models\MenuItem;
 use Laraflat\Laraflat\Laraflat\Models\Module;
 use Laraflat\Laraflat\Laraflat\Models\Relation;
 use Laraflat\Laraflat\Laraflat\Traits\GeneratorTrait;
@@ -43,6 +44,12 @@ class GeneratorController extends Controller
         $module = $module->findOrFail($id);
 
         /*
+         * delete module item form the menu
+         */
+
+        MenuItem::where('slug' , $module->name)->delete();
+
+        /*
          * delete module if exists
          */
 
@@ -67,6 +74,12 @@ class GeneratorController extends Controller
          */
 
         $module = $module->findOrFail($id);
+
+        /*
+         * insert module to the menue
+         */
+
+        $this->insertModuleToMenuItem($module);
 
         /*
        * delete module if exists
@@ -615,6 +628,51 @@ class GeneratorController extends Controller
 
             $this->createAdminViewsFolder($name);
         }
+
+    }
+
+    protected function insertModuleToMenuItem($module){
+
+        $order = MenuItem::count();
+
+        $array =   [
+            'name_ar' => $module->name,
+            'name_en' => $module->name,
+            'slug' => $module->name,
+            'order' => $order + 1,
+            'menu_id' => 1,
+            'parent_id' => 0,
+            'icon' => '<i class="fa fa-server"></i>',
+            'link' => '#'
+        ];
+
+        $parent = MenuItem::create($array);
+
+        $array =   [
+            'name_ar' => $module->name,
+            'name_en' => $module->name,
+            'slug' => $module->name,
+            'order' => $order + 2,
+            'menu_id' => 1,
+            'parent_id' => $parent->id,
+            'icon' => '#',
+            'link' => '/admin/'.strtolower($parent->slug)
+        ];
+
+        MenuItem::create($array);
+
+        $array =   [
+            'name_ar' => 'create '.$module->name,
+            'name_en' => 'create '.$module->name,
+            'slug' => $module->name,
+            'order' => $order + 3,
+            'menu_id' => 1,
+            'parent_id' => $parent->id,
+            'icon' => '#',
+            'link' => '/admin/'.strtolower($parent->slug).'/create'
+        ];
+
+        MenuItem::create($array);
 
     }
 

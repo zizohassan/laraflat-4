@@ -7,10 +7,13 @@ use Illuminate\Filesystem\Filesystem;
 
 use Illuminate\Support\Facades\Artisan;
 use Laraflat\Laraflat\Laraflat\Models\Module;
+use Laraflat\Laraflat\Laraflat\Traits\SeedsTrait;
 
 
 class InstallCommand extends Command
 {
+
+    use SeedsTrait;
 
     protected $DS = DIRECTORY_SEPARATOR;
 
@@ -91,6 +94,8 @@ class InstallCommand extends Command
             , $this->buildFile($this->getKernelStub() , $name)
         );
 
+        $this->adminMenu();
+        $this->menuItems();
     }
 
 

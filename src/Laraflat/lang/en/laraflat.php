@@ -77,7 +77,23 @@ return[
     'Laraflat Export' => 'Laraflat Export',
     'Here you Can Export Any module you generated with laraflat' => 'Here you Can Export Any module you generated with laraflat',
     'Laraflat Import' => 'Laraflat Import',
-    'Here you Can Upload any module you generated with laraflat' => 'Here you Can Upload any module you generated with laraflat'
-
+    'Here you Can Upload any module you generated with laraflat' => 'Here you Can Upload any module you generated with laraflat',
+    'add item' => 'Add Item',
+    'menu builder' => 'Build Items ',
+    'menu controller' => 'Control Menu',
+    'Here you Can control your menu' => 'Here you Can control your menu',
+    'build menu' => 'Build Your Menu',
+    'Here you Can build your menu' => 'Add Edit Delete Items from menue',
+    'Item name Arabic' => 'Item name Arabic',
+    'Item name English' => 'Item name English',
+    'icon' => 'Icon',
+    'link' => 'Link',
+    'Parent Item' => 'Parent Item',
+    'No parent menu' => 'No parent menu',
+    'Menu' => 'Menu',
+    'menu control' => 'Menu Control',
+    'add menu' => 'Add Menu',
+    'Menu name' => 'Menu name',
+    'Laraflat' => 'Laraflat'
 
 ];

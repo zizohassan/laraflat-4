@@ -9,6 +9,16 @@ function l(){
 }
 
 /*
+ * get filed with current lang
+ * pass the filed and we will return this filed with
+ * the currnet lang
+ */
+
+function fwcl($filed){
+    return $filed.'_'.l();
+}
+
+/*
  * return url with current language key
  */
 
