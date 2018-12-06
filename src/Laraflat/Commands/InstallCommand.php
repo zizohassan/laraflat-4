@@ -2,6 +2,7 @@
 
 namespace Laraflat\Laraflat\Laraflat\Commands;
 
+use App\Modules\Users\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
@@ -70,6 +71,11 @@ class InstallCommand extends Command
         );
 
         $this->filesystem->put(
+            fixPath(app_path('Http/Controllers/Auth/RegisterController.php'))
+            , $this->buildFile($this->getRegisterControllerStub() , $name)
+        );
+
+        $this->filesystem->put(
             fixPath(base_path('resources/views/layouts/app.blade.php'))
             , $this->buildFile($this->getAppStub() , $name)
         );
@@ -97,6 +103,14 @@ class InstallCommand extends Command
 
         $this->adminMenu();
         $this->menuItems();
+
+        User::create([
+            'name' => 'laraflat',
+            'email' => 'admin@laraflat.com',
+            'password' => 'laraflat',
+            'group_id' => 1
+        ]);
+
     }
 
 
@@ -107,6 +121,16 @@ class InstallCommand extends Command
     protected function getEditStub(){
         return __DIR__.'/../../stubs/install/database-seeder.stub';
     }
+
+    /*
+     * get file
+     */
+
+    protected function getRegisterControllerStub(){
+        return __DIR__.'/../../stubs/install/register-controller.stub';
+    }
+
+
 
     /*
     * get config file
