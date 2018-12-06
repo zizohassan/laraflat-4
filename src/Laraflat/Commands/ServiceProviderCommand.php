@@ -51,9 +51,29 @@ class ServiceProviderCommand extends Command
 
         $module = Module::where('name' , $moduleName)->first();
 
+        $route = "";
+
+        if($module->admin == 'yes'){
+
+            $route .= "\t\t\t".'$this->loadRoutesFrom(__DIR__ . \'/../Routes/admin.php\');'."\n\n";
+
+        }
+
+        if($module->website == 'yes'){
+
+            $route .= "\t\t\t".'$this->loadRoutesFrom(__DIR__ . \'/../Routes/front.php\');'."\n\n";
+
+        }
+
+        if($module->api == 'yes'){
+
+            $route .= "\t\t\t".'$this->loadRoutesFrom(__DIR__ . \'/../Routes/api.php\');'."\n\n";
+
+        }
+
         $this->filesystem->put(
             fixPath(base_path('app/Modules/'.$module->name.'/Providers/Laraflat'.$module->name.'ServicesProvider.php'))
-            , $this->buildFile($module->name , mb_strtolower($module->name))
+            , $this->buildFile($module->name , mb_strtolower($module->name) , $route)
         );
 
     }
@@ -70,11 +90,11 @@ class ServiceProviderCommand extends Command
      * replace  stub file with data
      */
 
-    protected function buildFile($className , $name){
+    protected function buildFile($className , $name , $route){
 
         $stub = $this->filesystem->get($this->getStub());
 
-        return $this->replaceContent($stub, $className)->replaceName($stub, $name);
+        return $this->replaceContent($stub, $className , $route)->replaceName($stub, $name);
 
     }
 
@@ -86,11 +106,11 @@ class ServiceProviderCommand extends Command
      * @return $this
      */
 
-    protected function replaceContent(&$stub, $content)
+    protected function replaceContent(&$stub, $content , $route)
     {
         $stub = str_replace(
-            ['DummyClassName' , 'DummyConfigName'],
-            [$content , str_singular($content)],
+            ['DummyClassName' , 'DummyConfigName' , 'DummyRoute'],
+            [$content , str_singular($content) , $route],
             $stub
         );
         return $this;

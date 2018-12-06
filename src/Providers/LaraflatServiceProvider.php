@@ -3,6 +3,7 @@
 namespace Laraflat\Laraflat\Providers;
 
 
+use Chumper\Zipper\Zipper;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 use Laraflat\Laraflat\Laraflat\Commands\AdminAddEditCommand;
@@ -29,10 +30,13 @@ use Laraflat\Laraflat\Laraflat\Commands\MigrationCommand;
 use Laraflat\Laraflat\Laraflat\Commands\ModelCommand;
 use Laraflat\Laraflat\Laraflat\Commands\SeederCommand;
 use Laraflat\Laraflat\Laraflat\Commands\ServiceProviderCommand;
+use Laraflat\Laraflat\Laraflat\Traits\FileTrait;
 
 
 class LaraflatServiceProvider extends ServiceProvider
 {
+
+    use FileTrait;
 
     protected $DS = DIRECTORY_SEPARATOR;
 
@@ -44,6 +48,28 @@ class LaraflatServiceProvider extends ServiceProvider
 
     public function boot()
     {
+
+        $modulePath = app_path('Modules');
+
+        $this->createFolder($modulePath);
+
+        $location = __DIR__.$this->DS.'../Resources'.$this->DS.'Modules'.$this->DS.'Users.zip';
+
+        $destination = app_path('Modules');
+
+        $zip = new Zipper();
+
+        $zip->zip($location)->extractTo($destination);
+
+        /*
+         * change the auth to laraflat auth
+         */
+
+        $this->publishes([
+            __DIR__ . '/../Resources/config' => base_path('config'),
+        ], 'laraflat');
+
+
         /*
          * publish Admin panel Style
          * first put all js and css in public folder
@@ -52,6 +78,15 @@ class LaraflatServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../Resources/assets' => public_path('assets'),
         ], 'laraflat');
+
+        /*
+         * copy All users files to modules
+         */
+
+        $this->publishes([
+            __DIR__ . '/../Resources/Modules' => $modulePath,
+        ], 'laraflat');
+
 
         /*
          * load laraflat language files

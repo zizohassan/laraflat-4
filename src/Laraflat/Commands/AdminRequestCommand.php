@@ -52,9 +52,11 @@ class AdminRequestCommand extends Command
 
         $module = Module::where('name' , $moduleName)->first();
 
-        $rules = $this->generateRules($module->id)['rules'];
+        $genratedRules = $this->generateRules($module->id);
 
-        $overRide =  $this->generateRules($module->id)['overRide'];
+        $rules = $genratedRules['rules'];
+
+        $overRide =  $genratedRules['overRide'];
 
         $smallName = mb_strtolower($module->name);
 

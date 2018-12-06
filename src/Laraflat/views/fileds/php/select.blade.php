@@ -16,6 +16,8 @@
     $inputClass = isset($inputClass)  ? $inputClass : '' ;
     $multiSelect = isset($multiSelect) && $multiSelect == true ? true : false;
 @endphp
+@php $placeholder = isset($placeholder) ? $placeholder : $label @endphp
+
 <div class="form-group {{ $errors->has($name) ? "has-error" : ""  }} {{ isset($divClass) ? $divClass : '' }}" id="{{ isset($divId) ? $divId : '' }}" data-key="{{ isset($key) ? $key : '' }}">
     @isset($label)
          {!! Form::label($name, $label , ['class' => isset($labelClass) ? $labelClass : '' , 'id' =>  isset($labelId) ? $labelId : ''   ]) !!}

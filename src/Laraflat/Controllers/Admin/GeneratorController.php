@@ -4,14 +4,16 @@ namespace Laraflat\Laraflat\Laraflat\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Artisan;
+use Laraflat\Laraflat\Laraflat\Models\MenuItem;
 use Laraflat\Laraflat\Laraflat\Models\Module;
 use Laraflat\Laraflat\Laraflat\Models\Relation;
 use Laraflat\Laraflat\Laraflat\Traits\GeneratorTrait;
+use Laraflat\Laraflat\Laraflat\Traits\SeedsTrait;
 
 class GeneratorController extends Controller
 {
 
-    use GeneratorTrait;
+    use GeneratorTrait , SeedsTrait;
 
     /*
      * delete relation and rebuild the
@@ -43,6 +45,12 @@ class GeneratorController extends Controller
         $module = $module->findOrFail($id);
 
         /*
+         * delete module item form the menu
+         */
+
+        MenuItem::where('slug' , $module->name)->delete();
+
+        /*
          * delete module if exists
          */
 
@@ -67,6 +75,12 @@ class GeneratorController extends Controller
          */
 
         $module = $module->findOrFail($id);
+
+        /*
+         * insert module to the menue
+         */
+
+        $this->insertModuleToMenuItem($module);
 
         /*
        * delete module if exists
@@ -617,5 +631,7 @@ class GeneratorController extends Controller
         }
 
     }
+
+
 
 }

@@ -1,11 +1,12 @@
 <?php
 
-Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['localeSessionRedirect', 'localizationRedirect']], function () {
-
+Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
+    'localeSessionRedirect', 'localizationRedirect'
+]], function () {
     Route::group([
         'prefix' => '/admin',
         'namespace' => 'Laraflat\Laraflat\Laraflat\Controllers\Admin',
-        'middleware' => ['web']
+        'middleware' => ['web', 'adminMiddleWare']
     ], function () {
 
         /*
@@ -57,9 +58,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
         Route::post('generator/module/step-four/{id}', 'ModuleBuilderController@stepFourStore')->name('store-step-four');
         Route::get('generator/module/get-columns/{id}', 'ModuleBuilderController@getColumns')->name('get-columns');
 
-      /*
-       * Step five translation
-       */
+        /*
+         * Step five translation
+         */
 
         Route::get('generator/module/step-five/{id}', 'ModuleBuilderController@stepFiveView')->name('view-step-five');
         Route::post('generator/module/step-five/{id}', 'ModuleBuilderController@stepFiveStore')->name('store-step-five');
@@ -100,8 +101,20 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
         Route::get('module/import', 'ModuleController@importModule')->name('view-import');
         Route::post('module/import', 'ModuleController@postImportModule')->name('post-import');
 
+        /*
+         * menu controll
+         */
 
+        Route::get('menu', 'MenuController@index')->name('menu');
+        Route::post('menu', 'MenuController@store')->name('post-menu');
+        Route::get('menu/delete/{id}', 'MenuController@delete')->name('delete-menu');
+        Route::get('build/menu/{id}', 'MenuController@build')->name('build-menu');
 
+        /*
+         * itmes control
+         */
+
+        Route::resource('itmes', 'ItemsController');
 
     });
 

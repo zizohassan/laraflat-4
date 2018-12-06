@@ -30,12 +30,7 @@ class LaraflatDummyClassNameServicesProvider extends ServiceProvider
            * load  routes
            */
 
-            $this->loadRoutesFrom(__DIR__ . '/../Routes/admin.php');
-
-            $this->loadRoutesFrom(__DIR__ . '/../Routes/api.php');
-
-            $this->loadRoutesFrom(__DIR__ . '/../Routes/front.php');
-
+DummyRoute
            /*
             * load views
             */
