@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
 use Illuminate\Support\Facades\Artisan;
-use Laraflat\Laraflat\Laraflat\Models\Module;
+use Illuminate\Support\Facades\Hash;
 use Laraflat\Laraflat\Laraflat\Traits\FileTrait;
 use Laraflat\Laraflat\Laraflat\Traits\SeedsTrait;
 
@@ -15,7 +15,7 @@ use Laraflat\Laraflat\Laraflat\Traits\SeedsTrait;
 class InstallCommand extends Command
 {
 
-    use SeedsTrait , FileTrait;
+    use SeedsTrait, FileTrait;
 
     protected $DS = DIRECTORY_SEPARATOR;
 
@@ -61,44 +61,44 @@ class InstallCommand extends Command
 
         Artisan::call('make:auth');
 
-        $path = base_path('database'.$this->DS.'seeds'.$this->DS);
+        $path = base_path('database' . $this->DS . 'seeds' . $this->DS);
 
         $name = '';
 
         $this->filesystem->put(
-            fixPath($path.'DatabaseSeeder.php')
-            , $this->buildFile($this->getEditStub() , $name)
+            fixPath($path . 'DatabaseSeeder.php')
+            , $this->buildFile($this->getEditStub(), $name)
         );
 
         $this->filesystem->put(
             fixPath(app_path('Http/Controllers/Auth/RegisterController.php'))
-            , $this->buildFile($this->getRegisterControllerStub() , $name)
+            , $this->buildFile($this->getRegisterControllerStub(), $name)
         );
 
         $this->filesystem->put(
             fixPath(base_path('resources/views/layouts/app.blade.php'))
-            , $this->buildFile($this->getAppStub() , $name)
+            , $this->buildFile($this->getAppStub(), $name)
         );
 
 
         $this->filesystem->put(
             fixPath(base_path('config/laraflat.php'))
-            , $this->buildFile($this->getConfigStub() , $name)
+            , $this->buildFile($this->getConfigStub(), $name)
         );
 
         $this->filesystem->put(
             fixPath(base_path('config/laravellocalization.php'))
-            , $this->buildFile($this->getLangStub() , $name)
+            , $this->buildFile($this->getLangStub(), $name)
         );
 
         $this->filesystem->put(
             fixPath(base_path('config/app.php'))
-            , $this->buildFile($this->getProviderStub() , $name)
+            , $this->buildFile($this->getProviderStub(), $name)
         );
 
         $this->filesystem->put(
             fixPath(base_path('app/Http/Kernel.php'))
-            , $this->buildFile($this->getKernelStub() , $name)
+            , $this->buildFile($this->getKernelStub(), $name)
         );
 
         $this->adminMenu();
@@ -107,7 +107,7 @@ class InstallCommand extends Command
         User::create([
             'name' => 'laraflat',
             'email' => 'admin@laraflat.com',
-            'password' => 'laraflat',
+            'password' => Hash::make('laraflat'),
             'group_id' => 1
         ]);
 
@@ -118,65 +118,72 @@ class InstallCommand extends Command
      * get file
      */
 
-    protected function getEditStub(){
-        return __DIR__.'/../../stubs/install/database-seeder.stub';
+    protected function getEditStub()
+    {
+        return __DIR__ . '/../../stubs/install/database-seeder.stub';
     }
 
     /*
      * get file
      */
 
-    protected function getRegisterControllerStub(){
-        return __DIR__.'/../../stubs/install/register-controller.stub';
+    protected function getRegisterControllerStub()
+    {
+        return __DIR__ . '/../../stubs/install/register-controller.stub';
     }
-
 
 
     /*
     * get config file
     */
 
-    protected function getConfigStub(){
-        return __DIR__.'/../../stubs/config/laraflat.stub';
+    protected function getConfigStub()
+    {
+        return __DIR__ . '/../../stubs/config/laraflat.stub';
     }
 
     /*
     * get kernel file
     */
 
-    protected function getKernelStub(){
-        return __DIR__.'/../../stubs/install/kernel.stub';
+    protected function getKernelStub()
+    {
+        return __DIR__ . '/../../stubs/install/kernel.stub';
     }
 
     /*
     * get Providers file
     */
 
-    protected function getProviderStub(){
-        return __DIR__.'/../../stubs/install/config/app.stub';
+    protected function getProviderStub()
+    {
+        return __DIR__ . '/../../stubs/install/config/app.stub';
     }
 
     /*
     * get Providers file
     */
 
-    protected function getLangStub(){
-        return __DIR__.'/../../stubs/install/config/laravellocalization.stub';
+    protected function getLangStub()
+    {
+        return __DIR__ . '/../../stubs/install/config/laravellocalization.stub';
     }
 
     /*
     * get App  file
     */
 
-    protected function getAppStub(){
-        return __DIR__.'/../../stubs/install/app.stub';
+    protected function getAppStub()
+    {
+        return __DIR__ . '/../../stubs/install/app.stub';
     }
 
     /*
      * replace  stub file with data
      */
 
-    protected function buildFile($stub , $name){
+    protected function buildFile($stub, $name)
+    {
 
         $stub = $this->filesystem->get($stub);
 
@@ -187,8 +194,8 @@ class InstallCommand extends Command
     /**
      * Replace table name
      *
-     * @param  string  $stub
-     * @param  string  $name
+     * @param  string $stub
+     * @param  string $name
      * @return string
      */
 
