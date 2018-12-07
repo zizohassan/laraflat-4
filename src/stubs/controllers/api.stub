@@ -86,7 +86,7 @@ DummyFilters
              return $this->validateResponseError($errors);
         }
 DummyUploadFile
-        $row = $this->model->create($this->request);
+        $row = $this->model->create($this->request->all());
 DummyRelation
         return $this->apiResponse(new DummyClassResources($row));
     }
@@ -124,7 +124,7 @@ DummyRelation
             return $this->validateResponseError($errors);
         }
 DummyEditUpload
-        $row->update($this->request);
+        $row->update($this->request->all());
 DummyRelation
         return $this->apiResponse(new DummyClassResources($row));
     }

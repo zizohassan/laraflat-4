@@ -25,7 +25,6 @@ trait AdminFormTrait
 
     protected function generateForms($module_id, $grid = null)
     {
-
         /*
          * get module info
          */
@@ -41,7 +40,7 @@ trait AdminFormTrait
 
         $columns = $this->getColumnsForForm($module_id);
 
-        return $this->loopAndGenerate($module, $columns, $grid, 'crud');
+        return $this->loopAndGenerate($module, $columns, $grid, 'crud' , $module);
     }
 
     /*
@@ -64,10 +63,10 @@ trait AdminFormTrait
 
         $columns = $this->getColumnsForFilters($module_id, $type);
 
-        return $this->loopAndGenerate($module, $columns, $grid, 'filter');
+        return $this->loopAndGenerate($module, $columns, $grid, 'filter' , $module);
     }
 
-    protected function loopAndGenerate($module, $columns, $grid, $mode)
+    protected function loopAndGenerate($module, $columns, $grid, $mode , $moduleInfo)
     {
 
         /*
@@ -81,12 +80,12 @@ trait AdminFormTrait
                 foreach ($this->languageForForm() as $lang) {
                     $name = $column->name . '_' . $lang;
                     $data .= $this->openGrid($grid);
-                    $data .= "\t\t" . $this->checkColumnType($column->details, $name, $label . '.' . $name, $mode) . "\n";
+                    $data .= "\t\t" . $this->checkColumnType($column->details, $name, $label . '.' . $name, $mode , $moduleInfo) . "\n";
                     $data .= $this->closeGrid($grid);
                 }
             } else {
                 $data .= $this->openGrid($grid);
-                $data .= "\t\t" . $this->checkColumnType($column->details, $column->name, $label . '.' . $column->name, $mode) . "\n";
+                $data .= "\t\t" . $this->checkColumnType($column->details, $column->name, $label . '.' . $column->name, $mode , $moduleInfo) . "\n";
                 $data .= $this->closeGrid($grid);
             }
 
@@ -112,7 +111,7 @@ trait AdminFormTrait
         return $grid ? "\t" . '</div>' . "\n" : '';
     }
 
-    protected function checkColumnType($details, $name, $label, $mode = 'crud')
+    protected function checkColumnType($details, $name, $label, $mode = 'crud' , $moduleInfo)
     {
         switch ($details->html_type) {
             case "text":
@@ -143,13 +142,13 @@ trait AdminFormTrait
                 return $this->image($name, $label, $mode);
                 break;
             case "image[]":
-                return $this->imageArray($name, $label, $mode ,  $this->module);
+                return $this->imageArray($name, $label, $mode ,  $moduleInfo);
                 break;
             case "file":
                 return $this->file($name, $label, $mode);
                 break;
             case "file[]":
-                return $this->fileArray($name, $label, $mode ,  $this->module);
+                return $this->fileArray($name, $label, $mode ,  $moduleInfo);
                 break;
             default:
                 return $this->stringInput($name, $label, $mode);

@@ -29,8 +29,13 @@ trait Upload
 
             $data .= "\t\t".'$this->uploadFile([';
 
-            foreach ($columns as $column){
-                $data .= "'".$column->name."',";
+            foreach ($columns as $key => $column){
+
+                $data .= "'".$column->name."'";
+
+                if(count($columns) != ($key +1)){
+                    $data .= ",";
+                }
 
                 $delete .= $this->generateDeleteFile($column);
             }

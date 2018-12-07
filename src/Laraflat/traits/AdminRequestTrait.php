@@ -17,7 +17,7 @@ trait AdminRequestTrait
     ];
 
     protected $removeRequireInUpdate = [
-        'image' , 'password'
+        'image', 'password', 'file', 'image[]', 'file[]'
     ];
 
     protected $countRules = 0;
@@ -52,12 +52,12 @@ trait AdminRequestTrait
         foreach ($columns as $column) {
             if ($column->multi_lang == 1) {
                 foreach ($this->language() as $lang) {
-                    $data .= $this->buildRules($column->details->validation, $column->details->custom_validation, $column->name . '_' . $lang, $module , $column);
-                    $data1 .= $this->buildOverRideRules($column->details->validation, $column->details->custom_validation, $column->name . '_' . $lang, $module , $column);
+                    $data .= $this->buildRules($column->details->validation, $column->details->custom_validation, $column->name . '_' . $lang, $module, $column);
+                    $data1 .= $this->buildOverRideRules($column->details->validation, $column->details->custom_validation, $column->name . '_' . $lang, $module, $column);
                 }
             } else {
-                $data .= $this->buildRules($column->details->validation, $column->details->custom_validation, $column->name, $module , $column);
-                $data1 .= $this->buildOverRideRules($column->details->validation, $column->details->custom_validation, $column->name, $module , $column);
+                $data .= $this->buildRules($column->details->validation, $column->details->custom_validation, $column->name, $module, $column);
+                $data1 .= $this->buildOverRideRules($column->details->validation, $column->details->custom_validation, $column->name, $module, $column);
             }
         }
         $data .= $this->relationRequest($module_id);
@@ -69,14 +69,14 @@ trait AdminRequestTrait
      * transform rules to from json to text
      */
 
-    protected function buildRules($rules, $custom_rule, $name, $module , $column)
+    protected function buildRules($rules, $custom_rule, $name, $module, $column)
     {
 
         $data = '';
 
         $rules = json_decode($rules, true);
 
-        $name = str_contains($column->details->html_type , '[]') ? $name.'.*' : $name;
+        $name = str_contains($column->details->html_type, '[]') ? $name . '.*' : $name;
 
         $data .= "\t\t\t" . "'" . $name . "' => '";
 
@@ -98,7 +98,7 @@ trait AdminRequestTrait
     }
 
 
-    protected function buildOverRideRules($rules, $custom_rule, $name, $module , $column)
+    protected function buildOverRideRules($rules, $custom_rule, $name, $module, $column)
     {
 
         $data = '';
@@ -132,25 +132,27 @@ trait AdminRequestTrait
          * or if the column is password
          */
 
-        if(in_array($column->details->html_type , $this->removeRequireInUpdate)){
+        if (in_array($column->details->html_type, $this->removeRequireInUpdate)) {
 
             $data = "\t\t\t\t" . "'" . $name . "' => '";
 
             $validation = $this->normalValidation(array_diff($rules, $this->cusotmeRule));
 
-            $validation = str_replace('required' , '' , $validation);
+            $validation = str_replace('required', '', $validation);
 
-            $validation = str_replace('nullable' , '' , $validation);
+            $validation = str_replace('nullable', '', $validation);
 
             if ($custom_rule != '') {
                 $validation .= '|' . $custom_rule;
             }
 
-            $validation = trim($validation , '|');
+            $validation = trim($validation, '|');
+
+            $validation .= $this->customValidationOverRide([$column->details->html_type], $module, $name);
+
+            $validation = trim($validation, '|');
 
             $data .= $validation;
-
-            $data .= $this->customValidationOverRide([$column->details->html_type], $module, $name);
 
             $data .= "'," . "\n";
 
@@ -190,6 +192,15 @@ trait AdminRequestTrait
                 return "|nullable";
                 break;
             case "password":
+                return "|nullable";
+                break;
+            case "file":
+                return "|nullable";
+                break;
+            case "file[]":
+                return "|nullable";
+                break;
+            case "image[]":
                 return "|nullable";
                 break;
         }

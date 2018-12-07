@@ -116,7 +116,6 @@ trait InputTypesTrait
 
     protected function imageArray($name, $label, $mode , $module)
     {
-
         return '@include("laraflat::fileds.php.image-array" , [ "url" => "'.strtolower($module->name).'" , "label"  => trans("' . $label . '")  , "value" => '.$this->checkTheValue($mode , $name ).'  ,  "name" =>"' . $name . '[]" ])';
     }
 
