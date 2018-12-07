@@ -105,15 +105,11 @@ class MigrationCommand extends Command
 
         shell_exec('composer --working-dir=' . fixPath(app_path("/")) . ' dump-autoload');
 
-        Artisan::call('migrate:refresh' , ['--seed' => true]);
+        Artisan::call('migrate:fresh' , ['--seed' => true]);
 
         Schema::enableForeignKeyConstraints();
 
-        $this->adminMenu();
-
-        $this->menuItems();
-
-        $this->generateAllModulesItems();
+//        $this->generateAllModulesItems();
     }
 
   /*

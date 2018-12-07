@@ -2,6 +2,7 @@
 namespace App\Modules\DummyClass\Database\Seeds;
 
 use Illuminate\Database\Seeder;
+use Laraflat\Laraflat\Laraflat\Models\MenuItem;
 
 class DummyClassSeeder extends Seeder
 {
@@ -50,6 +51,20 @@ DummyRelation
        if(!empty($array)){
           \Laraflat\Laraflat\Laraflat\Models\Relation::insert($array);
        }
+
+       /*
+       * Menu Items
+       */
+
+DummyParentMenuItems
+
+       $parent =  MenuItem::create($parent);
+
+DummyChildMenuItems
+
+        if(!empty($child)){
+             MenuItem::insert($child);
+        }
 
     }
 }

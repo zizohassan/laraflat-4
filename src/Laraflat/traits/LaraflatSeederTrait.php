@@ -3,6 +3,8 @@
 namespace Laraflat\Laraflat\Laraflat\Traits;
 
 
+use Laraflat\Laraflat\Laraflat\Seeders\ItemsSeeder;
+
 trait LaraflatSeederTrait
 {
 
@@ -15,6 +17,8 @@ trait LaraflatSeederTrait
     */
 
     protected function getLaraFlatSeeder(){
+
+        $this->call(ItemsSeeder::class);
 
         $path = fixPath(base_path('app/Modules'));
 

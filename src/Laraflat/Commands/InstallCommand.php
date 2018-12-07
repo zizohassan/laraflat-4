@@ -55,8 +55,6 @@ class InstallCommand extends Command
 
         Artisan::call('migrate');
 
-        Artisan::call('db:seed');
-
         Artisan::call('storage:link');
 
         Artisan::call('make:auth');
@@ -101,8 +99,11 @@ class InstallCommand extends Command
             , $this->buildFile($this->getKernelStub(), $name)
         );
 
-        $this->adminMenu();
-        $this->menuItems();
+        /*
+         * seed data
+         */
+
+        Artisan::call('db:seed');
 
     }
 

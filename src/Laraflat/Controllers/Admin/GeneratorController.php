@@ -48,7 +48,9 @@ class GeneratorController extends Controller
          * delete module item form the menu
          */
 
-        MenuItem::where('slug' , $module->name)->delete();
+        $ids = MenuItem::where('slug' , $module->name)->pluck('id');
+
+        MenuItem::destroy($ids);
 
         /*
          * delete module if exists
@@ -77,10 +79,10 @@ class GeneratorController extends Controller
         $module = $module->findOrFail($id);
 
         /*
-         * insert module to the menue
+         * insert module to the menu
          */
 
-        $this->insertModuleToMenuItem($module);
+       // $this->insertModuleToMenuItem($module);
 
         /*
        * delete module if exists

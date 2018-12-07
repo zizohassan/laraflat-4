@@ -62,9 +62,15 @@ class SeederCommand extends Command
 
         $relationText = $this->getModuleRelation($module->id);
 
+        $menuText = $this->getMenuItems($module->id);
+
+        $parentMenu = $menuText['parent'];
+
+        $childMenu = $menuText['child'];
+
         $this->filesystem->put(
             fixPath(base_path('app/Modules/'.$module->name.'/Database/seeds/'.$module->name.'Seeder.php'))
-            , $this->buildFile($moduleText , $columnText , $module->name , $columnDetailsText ,$relationText)
+            , $this->buildFile($moduleText , $columnText , $module->name , $columnDetailsText ,$relationText , $parentMenu , $childMenu)
         );
 
 //        Artisan::call('migrate');
@@ -82,11 +88,11 @@ class SeederCommand extends Command
      * replace  stub file with data
      */
 
-    protected function buildFile($moduleText , $columnText , $name , $columnDetailsText , $relationText){
+    protected function buildFile($moduleText , $columnText , $name , $columnDetailsText , $relationText , $parentMenu , $childMenu){
 
         $stub = $this->filesystem->get($this->getStub());
 
-        return $this->replaceContent($stub, $moduleText , $columnText , $name , $relationText)->replaceTableName($stub, $columnDetailsText);
+        return $this->replaceContent($stub, $moduleText , $columnText , $name , $relationText , $parentMenu , $childMenu)->replaceTableName($stub, $columnDetailsText);
 
     }
 
@@ -98,11 +104,11 @@ class SeederCommand extends Command
      * @return $this
      */
 
-    protected function replaceContent(&$stub, $moduleText , $columnText , $name , $relationText)
+    protected function replaceContent(&$stub, $moduleText , $columnText , $name , $relationText , $parentMenu , $childMenu)
     {
         $stub = str_replace(
-            ['DummyModule' , 'DummyColumn' , 'DummyClass' , 'DummyRelation'],
-            [$moduleText , $columnText , $name ,$relationText],
+            ['DummyModule' , 'DummyColumn' , 'DummyClass' , 'DummyRelation' , 'DummyParentMenuItems' , 'DummyChildMenuItems'],
+            [$moduleText , $columnText , $name ,$relationText , $parentMenu , $childMenu],
             $stub
         );
         return $this;

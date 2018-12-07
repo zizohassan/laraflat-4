@@ -19,6 +19,7 @@ trait SeedsTrait
 
         $items = [
             [
+                'id' => 1,
                 'name_ar' => 'القوائم',
                 'name_en' => 'Menus',
                 'slug' => 'menus',
@@ -29,6 +30,7 @@ trait SeedsTrait
                 'link' => '/admin/menu'
             ],
             [
+                'id' => 2,
                 'name_ar' => 'المديولات',
                 'name_en' => 'Modules',
                 'slug' => 'generator',
@@ -39,6 +41,7 @@ trait SeedsTrait
                 'link' => '#'
             ],
             [
+                'id' => 3,
                 'name_ar' => 'انشاء المديولات',
                 'name_en' => 'Add Module',
                 'slug' => 'add-module',
@@ -49,6 +52,7 @@ trait SeedsTrait
                 'link' => '/admin/generator/module/step-one'
             ],
             [
+                'id' => 4,
                 'name_ar' => 'التحكم في المدويلات',
                 'name_en' => 'Module Control',
                 'slug' => 'module-control',
@@ -60,19 +64,21 @@ trait SeedsTrait
             ],
         ];
 
-        foreach ($items as $item) {
-            MenuItem::create($item);
-        }
+
+        MenuItem::insert($items);
+
 
     }
 
-    protected function generateAllModulesItems(){
-        foreach (Module::get() as $module){
+    protected function generateAllModulesItems()
+    {
+        foreach (Module::get() as $module) {
             $this->insertModuleToMenuItem($module);
         }
     }
 
-    protected function insertModuleToMenuItem($module){
+    protected function insertModuleToMenuItem($module)
+    {
 
         /*
          * count prev items to get order for new one
@@ -84,7 +90,7 @@ trait SeedsTrait
          * generate main item (parent)
          */
 
-        $array =   [
+        $array = [
             'name_ar' => $module->name,
             'name_en' => $module->name,
             'slug' => $module->name,
@@ -101,15 +107,15 @@ trait SeedsTrait
          * gentrate control item
          */
 
-        $array =   [
-            'name_ar' =>  'Control '.$module->name,
-            'name_en' =>  'Control '.$module->name,
+        $array = [
+            'name_ar' => 'Control ' . $module->name,
+            'name_en' => 'Control ' . $module->name,
             'slug' => $module->name,
             'order' => $order + 2,
             'menu_id' => 1,
             'parent_id' => $parent->id,
             'icon' => '#',
-            'link' => '/admin/'.strtolower($parent->slug)
+            'link' => '/admin/' . strtolower($parent->slug)
         ];
 
         MenuItem::create($array);
@@ -118,15 +124,15 @@ trait SeedsTrait
          * gentrate create item
          */
 
-        $array =   [
-            'name_ar' => 'Create '.$module->name,
-            'name_en' => 'Create '.$module->name,
+        $array = [
+            'name_ar' => 'Create ' . $module->name,
+            'name_en' => 'Create ' . $module->name,
             'slug' => $module->name,
             'order' => $order + 3,
             'menu_id' => 1,
             'parent_id' => $parent->id,
             'icon' => '#',
-            'link' => '/admin/'.strtolower($parent->slug).'/create'
+            'link' => '/admin/' . strtolower($parent->slug) . '/create'
         ];
 
         MenuItem::create($array);

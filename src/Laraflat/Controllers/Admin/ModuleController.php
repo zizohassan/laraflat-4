@@ -99,7 +99,7 @@ class ModuleController
 
             $zipper = new \Chumper\Zipper\Zipper;
 
-            $zipper->make(storage_path($file))->extractTo(module_path($name));
+            $zipper->zip(storage_path($file))->extractTo(module_path($name));
 
             Storage::delete($file);
 
