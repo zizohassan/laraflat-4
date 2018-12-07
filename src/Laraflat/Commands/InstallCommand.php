@@ -2,12 +2,10 @@
 
 namespace Laraflat\Laraflat\Laraflat\Commands;
 
-use App\Modules\Users\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Hash;
 use Laraflat\Laraflat\Laraflat\Traits\FileTrait;
 use Laraflat\Laraflat\Laraflat\Traits\SeedsTrait;
 
@@ -57,6 +55,8 @@ class InstallCommand extends Command
 
         Artisan::call('migrate');
 
+        Artisan::call('db:seed');
+
         Artisan::call('storage:link');
 
         Artisan::call('make:auth');
@@ -103,13 +103,6 @@ class InstallCommand extends Command
 
         $this->adminMenu();
         $this->menuItems();
-
-        User::create([
-            'name' => 'laraflat',
-            'email' => 'admin@laraflat.com',
-            'password' => Hash::make('laraflat'),
-            'group_id' => 1
-        ]);
 
     }
 
