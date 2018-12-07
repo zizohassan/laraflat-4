@@ -17,50 +17,49 @@ class ItemsSeeder extends Seeder
     public function run()
     {
 
-        Menu::create(['name' => 'admin']);
+        $menu = Menu::create(['name' => 'admin']);
+
+        $parent = [
+            'name_ar' => 'المديولات',
+            'name_en' => 'Modules',
+            'slug' => 'generator',
+            'order' => 0,
+            'menu_id' => $menu->id,
+            'parent_id' => 0,
+            'icon' => '<i class="fa fa-dashboard"></i>',
+            'link' => '#'
+        ];
+
+        $parent = MenuItem::create($parent);
 
         $items = [
             [
-                'id' => 1,
                 'name_ar' => 'القوائم',
                 'name_en' => 'Menus',
                 'slug' => 'menus',
                 'order' => 0,
-                'menu_id' => 1,
+                'menu_id' => $menu->id,
                 'parent_id' => 0,
                 'icon' => '<i class="fa fa-server"></i>',
                 'link' => '/admin/menu'
             ],
             [
-                'id' => 2,
-                'name_ar' => 'المديولات',
-                'name_en' => 'Modules',
-                'slug' => 'generator',
-                'order' => 0,
-                'menu_id' => 1,
-                'parent_id' => 0,
-                'icon' => '<i class="fa fa-dashboard"></i>',
-                'link' => '#'
-            ],
-            [
-                'id' => 3,
                 'name_ar' => 'انشاء المديولات',
                 'name_en' => 'Add Module',
                 'slug' => 'add-module',
                 'order' => 0,
-                'menu_id' => 1,
-                'parent_id' => 2,
+                'menu_id' => $menu->id,
+                'parent_id' => $parent->id,
                 'icon' => '',
                 'link' => '/admin/generator/module/step-one'
             ],
             [
-                'id' => 4,
                 'name_ar' => 'التحكم في المدويلات',
                 'name_en' => 'Module Control',
                 'slug' => 'module-control',
                 'order' => 1,
-                'menu_id' => 1,
-                'parent_id' => 2,
+                'menu_id' => $menu->id,
+                'parent_id' => $parent->id,
                 'icon' => '',
                 'link' => '/admin/generator/modules'
             ],
