@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 use Laraflat\Laraflat\Laraflat\Traits\FileTrait;
 use Laraflat\Laraflat\Laraflat\Traits\SeedsTrait;
 
@@ -57,9 +58,9 @@ class InstallCommand extends Command
 
         Artisan::call('storage:link');
 
-        Artisan::call('make:auth');
+//        Artisan::call('make:auth');
 
-        $path = base_path('database' . $this->DS . 'seeds' . $this->DS);
+        $path = base_path('database' . $this->DS . 'Seeders' . $this->DS);
 
         $name = '';
 
@@ -68,16 +69,19 @@ class InstallCommand extends Command
             , $this->buildFile($this->getEditStub(), $name)
         );
 
+        File::ensureDirectoryExists(fixPath(app_path('Http/Controllers/Auth')));
+
         $this->filesystem->put(
             fixPath(app_path('Http/Controllers/Auth/RegisterController.php'))
             , $this->buildFile($this->getRegisterControllerStub(), $name)
         );
 
+        File::ensureDirectoryExists(fixPath(base_path('resources/views/layouts')));
+
         $this->filesystem->put(
             fixPath(base_path('resources/views/layouts/app.blade.php'))
             , $this->buildFile($this->getAppStub(), $name)
         );
-
 
         $this->filesystem->put(
             fixPath(base_path('config/laraflat.php'))
