@@ -4,6 +4,7 @@ namespace Laraflat\Laraflat\Providers;
 
 
 use Chumper\Zipper\Zipper;
+use Chumper\Zipper\ZipperServiceProvider;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 use Laraflat\Laraflat\Laraflat\Commands\AdminAddEditCommand;
@@ -31,7 +32,7 @@ use Laraflat\Laraflat\Laraflat\Commands\ModelCommand;
 use Laraflat\Laraflat\Laraflat\Commands\SeederCommand;
 use Laraflat\Laraflat\Laraflat\Commands\ServiceProviderCommand;
 use Laraflat\Laraflat\Laraflat\Traits\FileTrait;
-use Illuminate\Foundation\AliasLoader;
+
 
 class LaraflatServiceProvider extends ServiceProvider
 {
@@ -49,16 +50,7 @@ class LaraflatServiceProvider extends ServiceProvider
     public function boot()
     {
 
-        $this->app->singleton('zipper', function ($app) {
-            $return = $app->make('Chumper\Zipper\Zipper');
-
-            return $return;
-        });
-
-        $this->app->booting(function () {
-            $loader = AliasLoader::getInstance();
-            $loader->alias('Zipper', 'Chumper\Zipper\Facades\Zipper');
-        });
+        app()->register(ZipperServiceProvider::class);
 
         $modulePath = app_path('Modules');
 
@@ -66,11 +58,13 @@ class LaraflatServiceProvider extends ServiceProvider
 
         $location = __DIR__ . $this->DS . '../Resources' . $this->DS . 'Modules' . $this->DS . 'Users.zip';
 
-        $destination = app_path('Modules');
+        if ($this->fileExists($location)) {
+            $destination = app_path('Modules');
 
-        $zip = new Zipper();
+            $zip = new Zipper();
 
-        $zip->zip($location)->extractTo($destination);
+            $zip->zip($location)->extractTo($destination);
+        }
 
         /*
          * change the auth to laraflat auth
