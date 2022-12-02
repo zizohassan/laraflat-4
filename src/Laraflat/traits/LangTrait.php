@@ -7,6 +7,7 @@ namespace Laraflat\Laraflat\Laraflat\Traits;
 use Laraflat\Laraflat\Laraflat\Models\Column;
 use Laraflat\Laraflat\Laraflat\Models\Relation;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Illuminate\Support\Str;
 
 trait LangTrait
 {
@@ -108,7 +109,7 @@ trait LangTrait
      */
 
     protected function addLine($key , $value){
-        return "\t"."'".$key."' => '".studly_case($value) ."',"."\n";
+        return "\t"."'".$key."' => '".Str::studly($value) ."',"."\n";
     }
 
 }
