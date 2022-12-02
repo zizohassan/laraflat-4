@@ -20,7 +20,7 @@ class Module extends Model
 
     public function setNameAttribute($value)
     {
-        $this->attributes['name'] = ucfirst(camel_case(str_plural(trim($value))));
+        $this->attributes['name'] = ucfirst(Illuminate\Support\Str::camel(str_plural(trim($value))));
     }
 
 

@@ -119,11 +119,11 @@ trait ModelTrait
         $data = '';
 
         $data .= "\t" . '/**' . "\n";
-        $data .= "\t" . '* Get the users '.ucfirst(camel_case($column->name)) . "\n";
+        $data .= "\t" . '* Get the users '.ucfirst(Illuminate\Support\Str::camel($column->name)) . "\n";
         $data .= "\t" . '*' . "\n";
         $data .= "\t" . '* @return string' . "\n";
         $data .= "\t" . '*/' . "\n\n";
-        $data .= "\t" . 'public function get' . ucfirst(camel_case($column->name)) . 'Attribute()' . "\n";
+        $data .= "\t" . 'public function get' . ucfirst(Illuminate\Support\Str::camel($column->name)) . 'Attribute()' . "\n";
         $data .= "\t" . '{' . "\n";
         $data .= "\t\t" . 'return $this->{\''.$column->name.'_\'.l()};' . "\n";
         $data .= "\t" . '}' . "\n\n";
