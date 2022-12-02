@@ -3,6 +3,7 @@
 namespace Laraflat\Laraflat\Laraflat\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Module extends Model
 {
@@ -20,7 +21,7 @@ class Module extends Model
 
     public function setNameAttribute($value)
     {
-        $this->attributes['name'] = ucfirst(camel(str_plural(trim($value))));
+        $this->attributes['name'] = ucfirst(Str::camel(Str::plural(trim($value))));
     }
 
 

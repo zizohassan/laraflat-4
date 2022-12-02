@@ -6,6 +6,7 @@ namespace Laraflat\Laraflat\Laraflat\Traits;
 use Laraflat\Laraflat\Laraflat\Models\Column;
 use Laraflat\Laraflat\Laraflat\Models\Relation;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Illuminate\Support\Str;
 
 trait ModelTrait
 {
@@ -119,11 +120,11 @@ trait ModelTrait
         $data = '';
 
         $data .= "\t" . '/**' . "\n";
-        $data .= "\t" . '* Get the users '.ucfirst(camel($column->name)) . "\n";
+        $data .= "\t" . '* Get the users '.ucfirst(Str::camel($column->name)) . "\n";
         $data .= "\t" . '*' . "\n";
         $data .= "\t" . '* @return string' . "\n";
         $data .= "\t" . '*/' . "\n\n";
-        $data .= "\t" . 'public function get' . ucfirst(camel($column->name)) . 'Attribute()' . "\n";
+        $data .= "\t" . 'public function get' . ucfirst(Str::camel($column->name)) . 'Attribute()' . "\n";
         $data .= "\t" . '{' . "\n";
         $data .= "\t\t" . 'return $this->{\''.$column->name.'_\'.l()};' . "\n";
         $data .= "\t" . '}' . "\n\n";

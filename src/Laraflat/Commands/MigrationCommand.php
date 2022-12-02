@@ -144,7 +144,7 @@ class MigrationCommand extends Command
     {
         $stub = str_replace(
             ['DummyContent' , 'DummyClass'],
-            [$content , ucfirst(camel(str_plural($name))) ],
+            [$content , ucfirst(Str::camel(Str::plural($name))) ],
             $stub
         );
         return $this;
