@@ -3,6 +3,7 @@
 namespace Laraflat\Laraflat\Laraflat\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Column extends Model
 {
@@ -20,7 +21,7 @@ class Column extends Model
 
     public function setNameAttribute($value)
     {
-        $this->attributes['name'] = snake_case(trim($value));
+        $this->attributes['name'] = Str::snake(trim($value));
     }
 
     public function module(){

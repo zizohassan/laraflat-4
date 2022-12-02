@@ -14,6 +14,7 @@ use Laraflat\Laraflat\Laraflat\Requests\StepOneRequest;
 use Laraflat\Laraflat\Laraflat\Requests\StepTwoRequest;
 use Laraflat\Laraflat\Laraflat\Traits\TypesTrait;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Illuminate\Support\Str;
 
 class ModuleBuilderController extends Controller
 {
@@ -151,7 +152,7 @@ class ModuleBuilderController extends Controller
         foreach ($request->name as $key => $name) {
             $array = [
                 'name' => $name,
-                'column' => snake_case($request->column[$key]),
+                'column' => Str::snake($request->column[$key]),
                 'modifiers' => $request->modifiers[$key],
                 'module_id' => $id,
                 'multi_lang' => $request->multi_lang[$key],
