@@ -56,7 +56,7 @@ DummyBody
                                 </a>
                             </th>
                             <th>
-                                <a href="{{ route('DummySmallName.edit' , ['id' => $row->id ]) }}" class="btn btn-info"><i class="fa fa-edit"></i></a>
+                                <a href="{{ route('DummySmallName.edit' , ['DummyModelName' => $row ]) }}" class="btn btn-info"><i class="fa fa-edit"></i></a>
                             </th>
                             <th>
                                  {!! Form::open(['route' => ['DummySmallName.destroy' , $row->id], 'method' => 'delete']) !!}

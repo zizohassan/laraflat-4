@@ -9,11 +9,12 @@ use Laraflat\Laraflat\Laraflat\Models\Module;
 use Laraflat\Laraflat\Laraflat\Traits\AdminFormTrait;
 use Laraflat\Laraflat\Laraflat\Traits\AdminIndexTrait;
 use Laraflat\Laraflat\Laraflat\Traits\FileTrait;
+use Illuminate\Support\Str;
 
 class AdminIndexCommand extends Command
 {
 
-    use AdminIndexTrait , AdminFormTrait , FileTrait;
+    use AdminIndexTrait, AdminFormTrait, FileTrait;
 
     protected $filesystem;
 
@@ -52,28 +53,30 @@ class AdminIndexCommand extends Command
     {
         $moduleName = $this->argument('module');
 
-        $module = Module::where('name' , $moduleName)->first();
+        $module = Module::where('name', $moduleName)->first();
 
         $header = $this->generateHeader($module->id);
 
         $body = $this->generateBody($module->id);
 
-        $filters = $this->generateFilters($module->id , 2);
+        $filters = $this->generateFilters($module->id, 2);
 
         $smallName = mb_strtolower($module->name);
 
-        $path = fixPath(base_path('app/Modules/'.$module->name.'/Resources/views/admin/'.$smallName));
+        $path = fixPath(base_path('app/Modules/' . $module->name . '/Resources/views/admin/' . $smallName));
+
+        $modelName = Str::singular($smallName);
 
         $this->createFolder($path);
 
         $this->filesystem->put(
-            fixPath($path.'/index.blade.php')
-            , $this->buildFile($header , $body , $smallName)
+            fixPath($path . '/index.blade.php')
+            , $this->buildFile($header, $body, $smallName, $modelName)
         );
 
         $this->filesystem->put(
-            fixPath($path.'/filters.blade.php')
-            , $this->buildFilters($filters , $smallName)
+            fixPath($path . '/filters.blade.php')
+            , $this->buildFilters($filters, $smallName)
         );
 
     }
@@ -82,19 +85,21 @@ class AdminIndexCommand extends Command
      * get file
      */
 
-    protected function getStub(){
-        return __DIR__.'/../../stubs/views/admin/index.stub';
+    protected function getStub()
+    {
+        return __DIR__ . '/../../stubs/views/admin/index.stub';
     }
 
     /*
     * replace  stub file with data
     */
 
-    protected function buildFile($header , $body  , $smallName){
+    protected function buildFile($header, $body, $smallName, $modelName)
+    {
 
         $stub = $this->filesystem->get($this->getStub());
 
-        return $this->replaceContent($stub , $header , $body )->replaceName($stub, $smallName);
+        return $this->replaceContent($stub, $header, $body)->replaceName($stub, $smallName)->replacModelName($stub, $modelName);
 
     }
 
@@ -102,16 +107,16 @@ class AdminIndexCommand extends Command
     /**
      * Replace content of migration
      *
-     * @param  string  $stub
-     * @param  string  $name
+     * @param string $stub
+     * @param string $name
      * @return $this
      */
 
-    protected function replaceContent(&$stub, $header , $body )
+    protected function replaceContent(&$stub, $header, $body)
     {
         $stub = str_replace(
-            ['DummyHeader' , 'DummyBody'],
-            [ $header , $body],
+            ['DummyHeader', 'DummyBody'],
+            [$header, $body],
             $stub
         );
         return $this;
@@ -120,21 +125,36 @@ class AdminIndexCommand extends Command
     /**
      * Replace table name
      *
-     * @param  string  $stub
-     * @param  string  $name
+     * @param string $stub
+     * @param string $name
      * @return string
      */
-    protected function replaceName($stub, $name)
+    protected function replaceName(&$stub, $name)
     {
-        return str_replace('DummySmallName', $name, $stub);
+        $stub = str_replace('DummySmallName', $name, $stub);
+
+        return $this;
+    }
+
+    /**
+     * Replace table name
+     *
+     * @param string $stub
+     * @param string $name
+     * @return string
+     */
+    protected function replacModelName($stub, $name)
+    {
+        return str_replace('DummyModelName', $name, $stub);
     }
 
     /*
      * get file
      */
 
-    protected function getStubFilters(){
-        return __DIR__.'/../../stubs/views/admin/filters.stub';
+    protected function getStubFilters()
+    {
+        return __DIR__ . '/../../stubs/views/admin/filters.stub';
     }
 
 
@@ -142,27 +162,28 @@ class AdminIndexCommand extends Command
     * replace  stub file with data
     */
 
-    protected function buildFilters($filters , $name){
+    protected function buildFilters($filters, $name)
+    {
 
         $stub = $this->filesystem->get($this->getStubFilters());
 
-        return $this->replaceContentFilter($stub , $name)->replaceFilters($stub, $filters);
+        return $this->replaceContentFilter($stub, $name)->replaceFilters($stub, $filters);
 
     }
 
     /**
      * Replace content of migration
      *
-     * @param  string  $stub
-     * @param  string  $name
+     * @param string $stub
+     * @param string $name
      * @return $this
      */
 
-    protected function replaceContentFilter(&$stub, $name )
+    protected function replaceContentFilter(&$stub, $name)
     {
         $stub = str_replace(
             ['DummyName'],
-            [ $name],
+            [$name],
             $stub
         );
         return $this;
@@ -172,17 +193,14 @@ class AdminIndexCommand extends Command
     /**
      * Replace table name
      *
-     * @param  string  $stub
-     * @param  string  $name
+     * @param string $stub
+     * @param string $name
      * @return string
      */
     protected function replaceFilters($stub, $name)
     {
         return str_replace('DummyFilters', $name, $stub);
     }
-
-
-
 
 
 }
