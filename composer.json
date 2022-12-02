@@ -12,7 +12,8 @@
   "require": {
     "php": "^8.0.2",
     "laravelcollective/html": "^6.3",
-    "mcamara/laravel-localization": "^1.7"
+    "mcamara/laravel-localization": "^1.7",
+    "laravel/helpers": "^1.5"
   },
   "autoload": {
     "psr-4": {
