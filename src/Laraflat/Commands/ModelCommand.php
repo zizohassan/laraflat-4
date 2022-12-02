@@ -54,7 +54,7 @@ class ModelCommand extends Command
 
         $module = Module::where('name', $moduleName)->first();
 
-        $singular = str_singular($module->name);
+        $singular = \Illuminate\Support\Str::singular($module->name);
 
         $fillAble = $this->generateFillAble($module->id);
 

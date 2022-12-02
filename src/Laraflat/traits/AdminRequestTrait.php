@@ -186,7 +186,7 @@ trait AdminRequestTrait
             case "unique":
                 $smallName = mb_strtolower($module->name);
                 $sprated = $this->countRules !== 0 ? '|' : '';
-                return $sprated . "unique:" . $smallName . ',' . $name . ',\'.$' . str_singular($smallName) . '->id';
+                return $sprated . "unique:" . $smallName . ',' . $name . ',\'.$' . \Illuminate\Support\Str::singular($smallName) . '->id';
                 break;
             case "image":
                 return "|nullable";
@@ -302,7 +302,7 @@ trait AdminRequestTrait
 
         foreach ($this->getModuleRelationRequest($module_id) as $relation) {
 
-            $moduleName = mb_strtolower(str_singular($relation->module_to->name));
+            $moduleName = mb_strtolower(\Illuminate\Support\Str::singular($relation->module_to->name));
 
             $moduleKey = $relation->module_to->getKeyName();
 

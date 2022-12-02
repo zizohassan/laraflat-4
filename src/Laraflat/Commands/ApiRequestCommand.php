@@ -7,6 +7,7 @@ use Illuminate\Filesystem\Filesystem;
 use Laraflat\Laraflat\Laraflat\Models\Module;
 use Laraflat\Laraflat\Laraflat\Traits\AdminRequestTrait;
 use Laraflat\Laraflat\Laraflat\Traits\FileTrait;
+use Illuminate\Support\Str;
 
 class ApiRequestCommand extends Command
 {
@@ -85,7 +86,7 @@ class ApiRequestCommand extends Command
 
         $stub = $this->filesystem->get($this->getStub());
 
-        $model = str_singular($name);
+        $model = Str::singular($name);
 
         return $this->replaceContent($stub, $name , $model , mb_strtolower($model) , $overRide)->replaceRules($stub, $rules);
 

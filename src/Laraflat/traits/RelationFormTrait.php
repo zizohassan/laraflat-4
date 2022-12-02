@@ -42,7 +42,7 @@ trait RelationFormTrait
 
             $primaryKey = $relation->module_to->getkeyName();
 
-            $module = str_singular(mb_strtolower($relation->module_to->name));
+            $module = \Illuminate\Support\Str::singular(mb_strtolower($relation->module_to->name));
 
             $name = $module.'_'.$primaryKey;
 
@@ -68,7 +68,7 @@ trait RelationFormTrait
             $pluckName = '"'.$relation->column->name.'_".l()';
         }
 
-        $array = '\\App\\Modules\\'.$relation->module_to->name.'\\Models\\'.str_singular($relation->module_to->name).'::active()->pluck('.$pluckName.', "'.$relation->module_to->getkeyName().'")->toArray()';
+        $array = '\\App\\Modules\\'.$relation->module_to->name.'\\Models\\'.\Illuminate\Support\Str::singular($relation->module_to->name).'::active()->pluck('.$pluckName.', "'.$relation->module_to->getkeyName().'")->toArray()';
 
         return ['label' => $label , 'array' => $array];
     }

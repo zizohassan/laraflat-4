@@ -60,7 +60,7 @@ class AdminControllerCommand extends Command
 
         $smallClass = mb_strtolower($module->name);
 
-        $modelName = str_singular($module->name);
+        $modelName = \Illuminate\Support\Str::singular($module->name);
 
         $smallModelName = mb_strtolower($modelName);
 

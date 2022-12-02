@@ -4,6 +4,8 @@ namespace Laraflat\Laraflat\Laraflat\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
+
 
 use Laraflat\Laraflat\Laraflat\Models\Module;
 
@@ -110,7 +112,7 @@ class ServiceProviderCommand extends Command
     {
         $stub = str_replace(
             ['DummyClassName' , 'DummyConfigName' , 'DummyRoute'],
-            [$content , str_singular($content) , $route],
+            [$content , Str::singular($content) , $route],
             $stub
         );
         return $this;

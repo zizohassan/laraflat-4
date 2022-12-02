@@ -85,7 +85,7 @@ class FrontRequestCommand extends Command
 
         $stub = $this->filesystem->get($this->getStub());
 
-        $model = str_singular($name);
+        $model = \Illuminate\Support\Str::singular($name);
 
         return $this->replaceContent($stub, $name , $model , mb_strtolower($model) , $overRide)->replaceRules($stub, $rules);
 

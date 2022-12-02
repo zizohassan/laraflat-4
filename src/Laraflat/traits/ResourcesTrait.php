@@ -55,9 +55,9 @@ trait ResourcesTrait
 
             if($relation->type != 'one_to_one'){
                 $name = strtolower($relation->module_to->name);
-                $data  .= "\t\t\t".'"'.$name.'" => '.$relation->module_to->name.'Resources::collection($this->'.str_singular($name).'),'."\n";
+                $data  .= "\t\t\t".'"'.$name.'" => '.$relation->module_to->name.'Resources::collection($this->'.\Illuminate\Support\Str::singular($name).'),'."\n";
             }else{
-                $name = strtolower(str_singular($relation->module_to->name));
+                $name = strtolower(\Illuminate\Support\Str::singular($relation->module_to->name));
                 $data  .= "\t\t\t".'"'.$name.'" => new '.$relation->module_to->name.'Resources($this->'.$name.'),'."\n";
             }
         }

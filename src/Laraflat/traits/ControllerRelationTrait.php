@@ -37,7 +37,7 @@ trait ControllerRelationTrait
 
             foreach ($manyToManyRelation as $relation) {
 
-                $relationName = str_singular(mb_strtolower($relation->module_to->name));
+                $relationName = \Illuminate\Support\Str::singular(mb_strtolower($relation->module_to->name));
 
                 $data .= "\t\t" . '$row->' . $relationName . '()->sync($request->' . $relationName . '_' . $relation->module_to->getKeyName() . ');' . "\n";
 
@@ -91,7 +91,7 @@ trait ControllerRelationTrait
 
             foreach ($manyToManyRelation as $key => $relation) {
 
-                $relationName = str_singular(mb_strtolower($relation->module_to->name));
+                $relationName = \Illuminate\Support\Str::singular(mb_strtolower($relation->module_to->name));
 
                 $data .= '"' . $relationName . '"';
 

@@ -60,9 +60,9 @@ trait MigrationRelationTrait
 
                 $primaryKeyId = $relation->module_from->getKeyName();
 
-                $primaryName = str_singular(mb_strtolower($relation->module_from->name)).'_'.$primaryKeyId;
+                $primaryName = \Illuminate\Support\Str::singular(mb_strtolower($relation->module_from->name)).'_'.$primaryKeyId;
 
-                $foreignName = str_singular(mb_strtolower($relation->module_to->name)).'_'.$foreignKeyId;
+                $foreignName = \Illuminate\Support\Str::singular(mb_strtolower($relation->module_to->name)).'_'.$foreignKeyId;
 
                 $foreignTable = mb_strtolower($relation->module_to->name);
 
@@ -101,7 +101,7 @@ trait MigrationRelationTrait
 
                 $primaryKey = $relation->module_from->getKeyName();
 
-                $name = str_singular(mb_strtolower($relation->module_to->name)).'_'.$primaryKey;
+                $name = \Illuminate\Support\Str::singular(mb_strtolower($relation->module_to->name)).'_'.$primaryKey;
 
                 $foreignTable = mb_strtolower($relation->module_to->name);
 

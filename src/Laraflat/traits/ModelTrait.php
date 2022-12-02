@@ -52,7 +52,7 @@ trait ModelTrait
 
         foreach ($this->getModuleRelationForFillAble($module_id) as $relation) {
 
-            $moduleName = mb_strtolower(str_singular($relation->module_to->name));
+            $moduleName = mb_strtolower(\Illuminate\Support\Str::singular($relation->module_to->name));
 
             $moduleKey = $relation->module_to->getKeyName();
 

@@ -45,7 +45,7 @@ trait ModelRelationTrait
 
                 $relationName = $relation->module_to->name;
 
-                $relationModelSingular = str_singular($relationName);
+                $relationModelSingular = \Illuminate\Support\Str::singular($relationName);
 
                 $data .= "\t".'public function '.mb_strtolower($relationModelSingular).'(){'."\n";
 

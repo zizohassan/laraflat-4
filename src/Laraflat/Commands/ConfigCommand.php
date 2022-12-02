@@ -4,6 +4,7 @@ namespace Laraflat\Laraflat\Laraflat\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
 
 use Laraflat\Laraflat\Laraflat\Models\Module;
 use Laraflat\Laraflat\Laraflat\Traits\ModelTrait;
@@ -52,7 +53,7 @@ class ConfigCommand extends Command
 
         $module = Module::where('name' , $moduleName)->first();
 
-        $singular = str_singular($module->name);
+        $singular = Str::singular($module->name);
 
         $smallName = mb_strtolower($singular);
 

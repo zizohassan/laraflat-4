@@ -8,6 +8,8 @@ use Laraflat\Laraflat\Laraflat\Models\Module;
 use Laraflat\Laraflat\Laraflat\Traits\ControllerRelationTrait;
 use Laraflat\Laraflat\Laraflat\Traits\ControllerTrait;
 use Laraflat\Laraflat\Laraflat\Traits\Upload;
+use Illuminate\Support\Str;
+
 
 class FrontControllerCommand extends Command
 {
@@ -59,7 +61,7 @@ class FrontControllerCommand extends Command
 
         $smallClass = mb_strtolower($module->name);
 
-        $modelName = str_singular($module->name);
+        $modelName = Str::singular($module->name);
 
         $smallModelName = mb_strtolower($modelName);
 

@@ -26,7 +26,7 @@ trait LangTrait
 
         $data .=  $this->addLine( $small, $small );
 
-        $single = str_singular($module->name);
+        $single = \Illuminate\Support\Str::singular($module->name);
 
         $data .=  $this->addLine($single , $single );
 
