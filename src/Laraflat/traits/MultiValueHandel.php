@@ -55,11 +55,11 @@ trait MultiValueHandel{
     protected function generateGetterForMultiColumnsArrayValue($column)
     {
         $data = "\t" . '/**' . "\n";
-        $data .= "\t" . '* Get the  '.ucfirst(Illuminate\Support\Str::camel($column->name)) . "\n";
+        $data .= "\t" . '* Get the  '.ucfirst(camel($column->name)) . "\n";
         $data .= "\t" . '*' . "\n";
         $data .= "\t" . '* @return string' . "\n";
         $data .= "\t" . '*/' . "\n\n";
-        $data .= "\t" . 'public function get' . ucfirst(Illuminate\Support\Str::camel($column->name)) . 'ArrayAttribute()' . "\n";
+        $data .= "\t" . 'public function get' . ucfirst(camel($column->name)) . 'ArrayAttribute()' . "\n";
         $data .= "\t" . '{' . "\n";
         $data .= "\t\t" . 'return json_decode($this->attributes["'.$column->name.'"]);' . "\n";
         $data .= "\t" . '}' . "\n\n";
@@ -74,11 +74,11 @@ trait MultiValueHandel{
     protected function generateGetterForMultiColumnsValue($column)
     {
         $data = "\t" . '/**' . "\n";
-        $data .= "\t" . '* Get the  '.ucfirst(Illuminate\Support\Str::camel($column->name)) . "\n";
+        $data .= "\t" . '* Get the  '.ucfirst(camel($column->name)) . "\n";
         $data .= "\t" . '*' . "\n";
         $data .= "\t" . '* @return string' . "\n";
         $data .= "\t" . '*/' . "\n\n";
-        $data .= "\t" . 'public function get' . ucfirst(Illuminate\Support\Str::camel($column->name)) . 'Attribute($value)' . "\n";
+        $data .= "\t" . 'public function get' . ucfirst(camel($column->name)) . 'Attribute($value)' . "\n";
         $data .= "\t" . '{' . "\n";
         $data .= "\t\t" . 'return json_decode($value);' . "\n";
         $data .= "\t" . '}' . "\n\n";
@@ -94,12 +94,12 @@ trait MultiValueHandel{
     protected function generateSetterForMultiColumnsValue($column)
     {
         $data = "\t" . '/**' . "\n";
-        $data .= "\t" . '* Set the  '.ucfirst(Illuminate\Support\Str::camel($column->name)) . "\n";
+        $data .= "\t" . '* Set the  '.ucfirst(camel($column->name)) . "\n";
         $data .= "\t" . '*' . "\n";
         $data .= "\t" . '* @param  string  $value' . "\n";
         $data .= "\t" . '* @return void' . "\n";
         $data .= "\t" . '*/' . "\n\n";
-        $data .= "\t" . 'public function set' . ucfirst(Illuminate\Support\Str::camel($column->name)) . 'Attribute($value)' . "\n";
+        $data .= "\t" . 'public function set' . ucfirst(camel($column->name)) . 'Attribute($value)' . "\n";
         $data .= "\t" . '{' . "\n";
         $data .= "\t\t" . '$this->attributes["'.$column->name.'"] = json($value);' . "\n";
         $data .= "\t" . '}' . "\n\n";
