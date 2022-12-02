@@ -31,7 +31,7 @@ use Laraflat\Laraflat\Laraflat\Commands\ModelCommand;
 use Laraflat\Laraflat\Laraflat\Commands\SeederCommand;
 use Laraflat\Laraflat\Laraflat\Commands\ServiceProviderCommand;
 use Laraflat\Laraflat\Laraflat\Traits\FileTrait;
-
+use Illuminate\Foundation\AliasLoader;
 
 class LaraflatServiceProvider extends ServiceProvider
 {
@@ -49,11 +49,22 @@ class LaraflatServiceProvider extends ServiceProvider
     public function boot()
     {
 
+        $this->app->singleton('zipper', function ($app) {
+            $return = $app->make('Chumper\Zipper\Zipper');
+
+            return $return;
+        });
+
+        $this->app->booting(function () {
+            $loader = AliasLoader::getInstance();
+            $loader->alias('Zipper', 'Chumper\Zipper\Facades\Zipper');
+        });
+
         $modulePath = app_path('Modules');
 
         $this->createFolder($modulePath);
 
-        $location = __DIR__.$this->DS.'../Resources'.$this->DS.'Modules'.$this->DS.'Users.zip';
+        $location = __DIR__ . $this->DS . '../Resources' . $this->DS . 'Modules' . $this->DS . 'Users.zip';
 
         $destination = app_path('Modules');
 
@@ -225,5 +236,9 @@ class LaraflatServiceProvider extends ServiceProvider
 
     }
 
+    public function provides()
+    {
+        return ['zipper'];
+    }
 
 }
