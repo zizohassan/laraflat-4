@@ -1,38 +1,39 @@
 {
-    "name": "laraflat/laraflat-4",
-    "description": "laraflat package",
-    "license": "MIT",
-    "minimum-stability": "dev",
-    "authors": [
-        {
-            "name": "Abdel Aziz hassan",
-            "email": "zizo1999988@gmail.com"
-        }
-    ],
-    "require": {
-        "php": "^8.0.2",
-        "laravelcollective/html": "^6.3",
-        "mcamara/laravel-localization": "^1.7"
-    },
-    "autoload": {
-        "psr-4": {
-            "Laraflat\\Laraflat\\": "src/"
-        }
-    },
-    "require-dev": {
-        "orchestra/testbench": "~3.0",
-        "orchestra/testbench-browser-kit": "~3.1"
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Laraflat\\Laraflat\\Tests\\": "tests/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Laraflat\\Laraflat\\Providers\\LaraflatServiceProvider"
-            ]
-        }
+  "name": "laraflat/laraflat-4",
+  "description": "laraflat package",
+  "license": "MIT",
+  "minimum-stability": "dev",
+  "authors": [
+    {
+      "name": "Abdel Aziz hassan",
+      "email": "zizo1999988@gmail.com"
     }
+  ],
+  "require": {
+    "php": "^8.0.2",
+    "laravelcollective/html": "^6.3",
+    "mcamara/laravel-localization": "^1.7"
+  },
+  "autoload": {
+    "psr-4": {
+      "Laraflat\\Laraflat\\": "src/",
+      "Chumper\\Zipper\\": "src/Chumper/Zipper"
+    }
+  },
+  "require-dev": {
+    "orchestra/testbench": "~3.0",
+    "orchestra/testbench-browser-kit": "~3.1"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Laraflat\\Laraflat\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Laraflat\\Laraflat\\Providers\\LaraflatServiceProvider"
+      ]
+    }
+  }
 }
