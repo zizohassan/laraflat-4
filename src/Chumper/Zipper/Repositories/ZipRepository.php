@@ -1,6 +1,6 @@
 <?php
 
-namespace Chumper\Zipper\Repositories;
+namespace Laraflat\Laraflat\Chumper\Zipper\Repositories;
 
 use Exception;
 use ZipArchive;

@@ -17,7 +17,6 @@
   "autoload": {
     "psr-4": {
       "Laraflat\\Laraflat\\": "src/",
-      "Chumper\\Zipper\\": "src/Chumper/Zipper"
     }
   },
   "require-dev": {

@@ -8,7 +8,7 @@
 
 namespace Laraflat\Laraflat\Laraflat\Controllers\Admin;
 
-use Chumper\Zipper\Zipper;
+use Laraflat\Laraflat\Chumper\Zipper\Zipper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Laraflat\Laraflat\Laraflat\Models\Module;
@@ -53,7 +53,7 @@ class ModuleController
 
         $files = glob(module_path($module->name));
 
-        $zipper = new \Chumper\Zipper\Zipper;
+        $zipper = new \Laraflat\Laraflat\Chumper\Zipper\Zipper;
 
         $zipper->make(fixPath(public_path($nameAfterZip)))->add($files)->close();
 
@@ -97,7 +97,7 @@ class ModuleController
 
             dd(storage_path($file));
 
-            $zipper = new \Chumper\Zipper\Zipper;
+            $zipper = new \Laraflat\Laraflat\Chumper\Zipper\Zipper;
 
             $zipper->zip(storage_path($file))->extractTo(module_path($name));
 

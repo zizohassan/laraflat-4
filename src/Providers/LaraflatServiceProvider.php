@@ -3,8 +3,8 @@
 namespace Laraflat\Laraflat\Providers;
 
 
-use Chumper\Zipper\Zipper;
-use Chumper\Zipper\ZipperServiceProvider;
+use Laraflat\Laraflat\Chumper\Zipper\Zipper;
+use Laraflat\Laraflat\Chumper\Zipper\ZipperServiceProvider;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 use Laraflat\Laraflat\Laraflat\Commands\AdminAddEditCommand;
@@ -57,7 +57,7 @@ class LaraflatServiceProvider extends ServiceProvider
         $this->createFolder($modulePath);
 
         $location = __DIR__ . $this->DS . '../Resources' . $this->DS . 'Modules' . $this->DS . 'Users.zip';
-
+        
         if ($this->fileExists($location)) {
             $destination = app_path('Modules');
 
@@ -229,10 +229,4 @@ class LaraflatServiceProvider extends ServiceProvider
         }
 
     }
-
-    public function provides()
-    {
-        return ['zipper'];
-    }
-
 }

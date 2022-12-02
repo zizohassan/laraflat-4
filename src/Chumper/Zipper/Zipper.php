@@ -1,8 +1,8 @@
 <?php
 
-namespace Chumper\Zipper;
+namespace Laraflat\Laraflat\Chumper\Zipper;
 
-use Chumper\Zipper\Repositories\RepositoryInterface;
+use Laraflat\Laraflat\Chumper\Zipper\Repositories\RepositoryInterface;
 use Exception;
 use Illuminate\Filesystem\Filesystem;
 
@@ -87,10 +87,10 @@ class Zipper
 
         $objectOrName = $type;
         if (is_string($type)) {
-            $objectOrName = 'Chumper\Zipper\Repositories\\' . ucwords($type) . 'Repository';
+            $objectOrName = 'Laraflat\Laraflat\Chumper\Zipper\Repositories\\' . ucwords($type) . 'Repository';
         }
 
-        if (!is_subclass_of($objectOrName, 'Chumper\Zipper\Repositories\RepositoryInterface')) {
+        if (!is_subclass_of($objectOrName, 'Laraflat\Laraflat\Chumper\Zipper\Repositories\RepositoryInterface')) {
             throw new \InvalidArgumentException("Class for '{$objectOrName}' must implement RepositoryInterface interface");
         }
 
@@ -613,7 +613,7 @@ class Zipper
     private function extractOneFileInternal($fileName, $path)
     {
         $tmpPath = str_replace($this->getInternalPath(), '', $fileName);
-        
+
         //Prevent Zip traversal attacks
         if (strpos($fileName, '../') !== false || strpos($fileName, '..\\') !== false) {
             throw new \RuntimeException('Special characters found within filenames');
