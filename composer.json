@@ -16,7 +16,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Laraflat\\Laraflat\\": "src/",
+      "Laraflat\\Laraflat\\": "src/"
     }
   },
   "require-dev": {

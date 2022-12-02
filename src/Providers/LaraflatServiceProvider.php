@@ -57,7 +57,7 @@ class LaraflatServiceProvider extends ServiceProvider
         $this->createFolder($modulePath);
 
         $location = __DIR__ . $this->DS . '../Resources' . $this->DS . 'Modules' . $this->DS . 'Users.zip';
-        
+
         if ($this->fileExists($location)) {
             $destination = app_path('Modules');
 
